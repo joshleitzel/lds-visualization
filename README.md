@@ -1,9 +1,10 @@
 # Large Data Sets - Visualization Project #
 
-## Start: web page with text input ##
+## Flow ##
 
-* User inputs what they want, e.g., “cluster GBAA001 GBAA002”
-* User input is sent to server (via JavaScript) which passes it along to one of two R programs depending on the action requested (“cluster” or “regression”)
+* Start: web page with text input ##
+  * User inputs what they want, e.g., “cluster GBAA001 GBAA002”
+  * User input is sent to server (via JavaScript) which passes it along to one of two R programs depending on the action requested (“cluster” or “regression”)
 * R program crunches:
   * background info: mean, median, blah blah stats 101 - 
   * if there are two or more data sets passed, R program must do some meaningful comparison between them
