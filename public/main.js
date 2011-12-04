@@ -6,6 +6,7 @@ $(document).ready(function () {
       randomLabel = $('#random'),
       randomInput = randomLabel.find('input');
 
+  // data checkbox togglemania
   form.find('input[name=data]').click(function() {
     console.log('here');
     if (allInput.is(':checked')) {
@@ -18,4 +19,9 @@ $(document).ready(function () {
       data.removeAttr('disabled').closest('label').removeClass('disabled');
     }
   });
+
+  // pseudo form submission
+  form.find('.submit a').click(function () {
+    alert('blue pill or red, neo?');
+  })
 });
