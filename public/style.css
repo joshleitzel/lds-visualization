@@ -24,40 +24,40 @@ h1 {
   width: 960px;
 }
 
-/* Forms */
-form {
+/* Main */
+#main {
   width: 250px;
 }
-form .section {
+#main .section {
   margin: 1em 0;
 }
-form .inner {
+#main .inner {
   padding: 1.5em 1em 0 1em;
 }
-form .inner input[type=checkbox], form .inner input[type=radio] {
+#main .inner input[type=checkbox], #main .inner input[type=radio] {
   margin-right: 0.5em;
 }
-form h2 {
+#main h2 {
   color: #BA0000;
   font-size: 140%;
 }
-form h2 .num {
+#main h2 .num {
   color: #362E2E;
   font-size: 110%;
 }
-form h2 .num:after {
+#main h2 .num:after {
   content: '.';
 }
 label, input[type=submit] {
   cursor: pointer;
 }
-form .submit {
+#main .submit {
   border-top: 1px solid #B5B5B5;
   margin: 0 auto;
   padding-top: 1.5em;
   text-align: center;
 }
-form .submit a:link, form .submit a:visited, form .submit a:active {
+#main .submit a:link, #main .submit a:visited, #main .submit a:active {
   background: #BA0000;
   border: 1px solid #8C1818;
   border-radius: 3px;
@@ -67,17 +67,18 @@ form .submit a:link, form .submit a:visited, form .submit a:active {
   text-decoration: none;
   text-shadow: 1px 1px 3px #8C1818;
 }
-form .submit a:hover {
+#main .submit a:hover {
   background: #A80000;
   text-shadow: 1px 1px 1px #8C1818;
 }
-form .submit a:active {
+#main .submit a:active {
   position: relative;
   left: 1px;
   top: 1px;
 }
 
-#data .inner {
+#data-sets {
+  display: none;
   max-height: 150px;
   overflow: auto;
 }
@@ -102,6 +103,39 @@ form .submit a:active {
   background: #163075;
   color: #DFE833;
   text-shadow: 0px 1px 1px #051030;
+}
+#loading-data {
+  color: #5C5C5C;
+  font-size: 80%;
+  padding: 1em;
+  text-align: center;
+}
+#add-data-set {
+  padding: 0.5em;
+  text-align: center;
+}
+#add-data-set a {
+  background: #2A57D4;
+  border: 1px solid #3F588F;
+  border-radius: 4px;
+  color: #fff;
+  display: inline-block;
+  font-size: 80%;
+  padding: 0.7em 1em;
+  text-decoration: none;
+  text-shadow: 1px 1px 2px #3F588F;
+}
+#add-data-set a:hover {
+  background: #2147B0;
+}
+#add-data-set-area {
+  border-top: 1px solid #EBEBEB;
+  display: none;
+  margin-top: 0.5em;
+  padding: 0.5em;
+}
+#add-data-set-area p {
+  margin-bottom: 0.5em;
 }
 
 #process .process + .process {

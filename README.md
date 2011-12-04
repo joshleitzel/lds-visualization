@@ -11,6 +11,7 @@
 
 ## Todo ##
 * (*in progress*) Basic web interface for running the application
+* (*mostly done*) Users can upload data sets or choose from pre-existing ones
 * R programs for parsing the data
   * Clustering program (file: `r/cluster.r`)
   * Regression program (file: `r/regression.r`)

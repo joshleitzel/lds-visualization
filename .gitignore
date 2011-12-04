@@ -1,2 +1,5 @@
 .monitor
 node_modules
+data/uploads
+.DS_STORE
+public/.DS_STORE

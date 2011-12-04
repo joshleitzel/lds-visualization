@@ -1,10 +1,20 @@
 $(document).ready(function () {
-  var form = $('form'),
+  var form = $('#main'),
       data = form.find('input[name=data]'),
       allLabel = $('#all'),
       allInput = allLabel.find('input'),
       randomLabel = $('#random'),
-      randomInput = randomLabel.find('input');
+      randomInput = randomLabel.find('input'),
+      ads = $('#add-data-set-area'),
+      adsForm = ads.find('form'),
+      adsInput = adsForm.find('input[type=file]'),
+      loadingData = $('#loading-data'),
+      dataSets = $('#data-sets');
+
+  // load data
+  $.get('/data', function (data) {
+    console.log(data);
+  });
 
   // data checkbox togglemania
   form.find('input[name=data]').click(function() {
@@ -17,6 +27,15 @@ $(document).ready(function () {
     } else {
       data.removeAttr('disabled').closest('label').removeClass('disabled');
     }
+  });
+
+  // add data set
+  form.find('#add-data-set a').click(function () {
+    ads.toggle();
+    $(this).toggle();
+  });
+  adsInput.change(function () {
+    adsForm.submit();
   });
 
   // pseudo form submission
