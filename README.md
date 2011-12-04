@@ -17,3 +17,4 @@
   * Program to re-arrange the data (e.g., "sort by mean", "sort by median")
 * (*in progress*) Server to handle the data interchange between R and JavaScript
 * Client-side visualization of the parsed data
+* Deploy to live server
