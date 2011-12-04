@@ -1,5 +1,14 @@
 # Large Data Sets - Visualization Project #
 
+## Local Setup ##
+* Install Node.js
+  * `brew node` for those enlightened souls with OS X and [Homebrew](http://mxcl.github.com/homebrew/), [nodejs.org](http://nodejs.org) for everybody else
+* Install NPM (Node Package Manager)
+  * `curl http://npmjs.org/install.sh | sh`
+* Inside your repo's directory, run `npm install`
+* To run the server, run `nodemon index.js`
+* Point your browser to `localhost:1337`, et voila!
+
 ## Flow ##
 
 * Start: web page with text input ##
