@@ -14,17 +14,11 @@ var http = require('http'),
 
 // Constants
 var DATA_ROOT = 'data/',
-    DATA_USER = 'uploads'; // relative to DATA_ROOT
-
-var templates = {
-  index : 'index',
-  run : 'run'
-};
-
-var scriptMap = {
-  cluster : 'r/cluster.r',
-  regression : 'r/regression.r'
-};
+    DATA_USER = 'uploads', // relative to DATA_ROOT
+    SCRIPT_MAP = {
+    cluster : 'r/cluster.r',
+    regression : 'r/regression.r'
+  };
 
 function getTemplate(templateName) {
   return fs.readFileSync('client/' + templateName + '.html').toString().replace('ROOT_PATH', ROOT_PATH);
@@ -70,7 +64,7 @@ server.post('/process', function (req, res) {
 
     // any pre-R processing of the data goes here
 
-    var args = _.union([scriptMap[process]], dataSets);
+    var args = _.union([SCRIPT_MAP[process]], dataSets);
     var rProc = childProcess.spawn('Rcsript', args);
     rProc.stdout.on('data', function (data) {
       var responseData = {};
