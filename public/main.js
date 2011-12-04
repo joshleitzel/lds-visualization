@@ -54,6 +54,7 @@ $(document).ready(function () {
   // pseudo main submission
   var formSubmit = function (event) {
     event.preventDefault();
+
     var processData = {},
         dataSets = [];
 
