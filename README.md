@@ -7,7 +7,7 @@
   * `curl http://npmjs.org/install.sh | sh`
 * Inside your repo's directory, run `npm install`
 * To run the server, run `nodemon index.js`
-* Point your browser to `localhost:1337`, et voila!
+* Point your browser to `http://localhost:1337`, et voila!
 
 ## Flow ##
 
