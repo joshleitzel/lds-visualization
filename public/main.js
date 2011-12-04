@@ -1,13 +1,13 @@
 $(document).ready(function () {
-  var form = $('#main'),
-      data = form.find('input[name=data]'),
+  var main = $('#main'),
+      data = main.find('input[name=data]'),
       allLabel = $('#all'),
       allInput = allLabel.find('input'),
       randomLabel = $('#random'),
       randomInput = randomLabel.find('input'),
       ads = $('#add-data-set-area'),
-      adsForm = ads.find('form'),
-      adsInput = adsForm.find('input[type=file]'),
+      adsmain = ads.find('main'),
+      adsInput = adsmain.find('input[type=file]'),
       loadingData = $('#loading-data'),
       dataSets = $('#data-sets');
 
@@ -22,7 +22,7 @@ $(document).ready(function () {
   });
 
   // data checkbox togglemania
-  form.find('input[name=data]').click(function() {
+  main.find('input[name=data]').click(function() {
     if (allInput.is(':checked')) {
       data.filter(':not([value=all],[value=random])').attr('checked', 'checked');
       randomLabel.addClass('disabled');
@@ -35,16 +35,16 @@ $(document).ready(function () {
   });
 
   // add data set
-  form.find('#add-data-set a').click(function () {
+  main.find('#add-data-set a').click(function () {
     ads.toggle();
     $(this).toggle();
   });
   adsInput.change(function () {
-    adsForm.submit();
+    adsmain.submit();
   });
 
-  // pseudo form submission
-  form.find('.submit a').click(function () {
+  // pseudo main submission
+  main.find('.submit a').click(function () {
     var processData = {},
         dataSets = [];
 
@@ -55,7 +55,7 @@ $(document).ready(function () {
     });
 
     processData.dataSets = dataSets;
-    processData.process = form.find('input[name=process]').val();
+    processData.process = main.find('input[name=process]').val();
 
     console.log('The following data is /process\'d');
     console.log(processData);
