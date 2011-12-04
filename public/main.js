@@ -52,7 +52,8 @@ $(document).ready(function () {
   });
 
   // pseudo main submission
-  var formSubmit = function () {
+  var formSubmit = function (event) {
+    event.preventDefault();
     var processData = {},
         dataSets = [];
 
@@ -71,7 +72,7 @@ $(document).ready(function () {
     // send to server for R crunch magic
     $.post('/process', processData, function (data, textStatus, jqXHR) {
       console.log(data);
-    })
+    });
   };
 
   // submit button togglemania
