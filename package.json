@@ -1,0 +1,11 @@
+{
+  "name": "lds-visualization",
+  "version": "0.1.1",
+  "dependencies": {
+    "underscore": "1.x.x",
+    "express" : "2.5.x"
+  },
+  "scripts": {
+    "start": "index.js"
+  }
+}
