@@ -23,6 +23,11 @@ h1 {
   margin: 0 auto;
   width: 960px;
 }
+h1 .tm {
+  color: #F2F0D8;
+  font-family: helvetica, arial, sans-serif;
+  font-weight: bold;
+}
 
 /* Main */
 #main {
