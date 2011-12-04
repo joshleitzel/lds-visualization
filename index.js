@@ -70,7 +70,8 @@ server.post('/process', function (req, res) {
 
     // any pre-R processing of the data goes here
 
-    var rProc = childProcess.spawn('Rcsript', [scriptMap[process], dataSets.join(' ')]);
+    var args = _.union([scriptMap[process]], dataSets);
+    var rProc = childProcess.spawn('Rcsript', args);
     rProc.stdout.on('data', function (data) {
       var responseData = {};
       // process sqlite response data from R and send it back as JSON
