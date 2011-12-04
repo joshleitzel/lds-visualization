@@ -21,12 +21,24 @@ $(document).ready(function () {
 
   // pseudo form submission
   form.find('.submit a').click(function () {
-    var dataSets = [];
+    var processData = {},
+        dataSets = [];
+
     data.filter(':not([value=random],[value=all])').each(function () {
       if ($(this).is(':checked')) {
         dataSets.push($(this).val());
       }
     });
-    console.log(dataSets);
+
+    processData.dataSets = dataSets;
+    processData.process = form.find('input[name=process]').val();
+
+    console.log('The following data is /process\'d');
+    console.log(processData);
+
+    // send to server for R crunch magic
+    $.post('/process', processData, function (data, textStatus, jqXHR) {
+      console.log(data);
+    })
   })
 });
