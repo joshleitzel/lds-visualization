@@ -33,8 +33,9 @@ server.use(express.bodyParser())
     var dataSets = req.body.dataSets,
         process = req.body.process;
 
-    if (_.isArray(dataSets) || (process != 'cluster' && process != 'regression')) {
+    if (!_.isArray(dataSets) || (process != 'cluster' && process != 'regression')) {
       res.end('Error: data sent is not valid');
+      return;
     }
 
     var rProc = require('child_process').spawn('Rcsript', [scriptMap[process], dataSets.join(' ')]);
@@ -44,8 +45,7 @@ server.use(express.bodyParser())
       res.end({ returned : 'return' });
     });
     rProc.stderr.on('data', function (error) {
-      console.log('Error:');
-      console.log(error);
+      res.end('There was a processing error');
     });
     rProc.on('exit', function (exitCode) {
       console.log('exit', exitCode);
