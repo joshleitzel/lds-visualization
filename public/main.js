@@ -1,6 +1,5 @@
 $(document).ready(function () {
   var main = $('#main'),
-      data = main.find('input[name=data]'),
       allLabel = $('#all'),
       allInput = allLabel.find('input'),
       randomLabel = $('#random'),
@@ -9,7 +8,13 @@ $(document).ready(function () {
       adsmain = ads.find('main'),
       adsInput = adsmain.find('input[type=file]'),
       loadingData = $('#loading-data'),
-      dataSets = $('#data-sets');
+      dataSets = $('#data-sets')
+      submit = main.find('.submit'),
+      submitP = submit.find('p');
+      submitButton = submit.find('a'),
+      dataReady = false,
+      processReady = false,
+      submitReady = false;
 
   // load data
   $.get('/data', function (data, textStatus, jqXHR) {
@@ -22,7 +27,8 @@ $(document).ready(function () {
   });
 
   // data checkbox togglemania
-  main.find('input[name=data]').click(function() {
+  main.find('input[name=data]').live('click', function() {
+    var data = $('[name=data]');
     if (allInput.is(':checked')) {
       data.filter(':not([value=all],[value=random])').attr('checked', 'checked');
       randomLabel.addClass('disabled');
@@ -32,6 +38,8 @@ $(document).ready(function () {
     } else {
       data.removeAttr('disabled').closest('label').removeClass('disabled');
     }
+    console.log('here');
+    toggleSubmit();
   });
 
   // add data set
@@ -44,7 +52,7 @@ $(document).ready(function () {
   });
 
   // pseudo main submission
-  main.find('.submit a').click(function () {
+  var formSubmit = function () {
     var processData = {},
         dataSets = [];
 
@@ -64,5 +72,23 @@ $(document).ready(function () {
     $.post('/process', processData, function (data, textStatus, jqXHR) {
       console.log(data);
     })
-  })
+  };
+
+  // submit button togglemania
+  function toggleSubmit() {
+    var processVal = $('[name=process]:checked').val();
+    if ($('input[name=data]').filter(':not([value=all],[value=random]):checked').length > 0 && (processVal === 'regression' || processVal === 'cluster')) {
+      submitP.slideUp();
+      submitButton.removeClass('disabled');
+      main.find('.submit a').bind('click', formSubmit);
+    } else {
+      submitButton.addClass('disabled');
+      submitP.slideDown();
+      main.find('.submit a').unbind('click');
+    }
+  }
+  toggleSubmit();
+  $('[name=process]').click(function () {
+    toggleSubmit();
+  });
 });

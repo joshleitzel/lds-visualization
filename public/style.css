@@ -57,11 +57,17 @@ label, input[type=submit] {
   padding-top: 1.5em;
   text-align: center;
 }
+#main .submit p {
+  color: #5C5C5C;
+  font-size: 90%;
+  margin-bottom: 1em;
+}
 #main .submit a:link, #main .submit a:visited, #main .submit a:active {
   background: #BA0000;
   border: 1px solid #8C1818;
   border-radius: 3px;
   color: #fff;
+  display: inline-block;
   font: 15px Signika, Georgia, serif;
   padding: 0.5em 1em;
   text-decoration: none;
@@ -75,6 +81,10 @@ label, input[type=submit] {
   position: relative;
   left: 1px;
   top: 1px;
+}
+#main .submit a.disabled {
+  cursor: normal;
+  opacity: .5;
 }
 
 #data-sets {
