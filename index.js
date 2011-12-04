@@ -35,14 +35,15 @@ server.use(express.bodyParser())
 
     if (!_.isArray(dataSets) || (process != 'cluster' && process != 'regression')) {
       res.end('Error: data sent is not valid');
-      return;
     }
+
+    // any pre-R processing of the data goes here
 
     var rProc = require('child_process').spawn('Rcsript', [scriptMap[process], dataSets.join(' ')]);
     rProc.stdout.on('data', function (data) {
-      console.log(data);
-      // send back to client
-      res.end({ returned : 'return' });
+      var responseData = {};
+      // process sqlite response data from R and send it back as JSON
+      res.end({ responseData : responseData });
     });
     rProc.stderr.on('data', function (error) {
       res.end('There was a processing error');

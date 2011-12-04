@@ -12,9 +12,9 @@
 ## Todo ##
 * (*in progress*) Basic web interface for running the application
 * R programs for parsing the data
-  * Clustering program
-  * Regression program
-  * Program to re-arrange the data (e.g., "sort by mean", "sort by median")
+  * Clustering program (file: `r/cluster.r`)
+  * Regression program (file: `r/regression.r`)
+  * Program to re-arrange the data (e.g., "sort by mean", "sort by median") (file: `r/format.r`)
 * (*in progress*) Server to handle the data interchange between R and JavaScript
 * Client-side visualization of the parsed data
 * Deploy to live server
