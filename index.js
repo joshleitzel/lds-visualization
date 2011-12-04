@@ -42,7 +42,7 @@ server.get('/data', function (req, res) {
     fs.readdir(DATA_ROOT + DATA_USER, function (err, files) {
       files = _.map(files, function (file) { return DATA_USER + '/' + file; });
       dataSets = _.union(dataSets, files);
-      console.log(dataSets);
+      res.end(dataSets.join(','));
     });
   });
 });

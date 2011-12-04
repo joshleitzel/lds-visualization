@@ -12,8 +12,13 @@ $(document).ready(function () {
       dataSets = $('#data-sets');
 
   // load data
-  $.get('/data', function (data) {
-    console.log(data);
+  $.get('/data', function (data, textStatus, jqXHR) {
+    var data = data.split(',');
+    data.forEach(function (dataSet) {
+      dataSets.append('<label><input type="checkbox" name="data" value="' + dataSet + '">' + dataSet + '</label>');
+    });
+    dataSets.show();
+    loadingData.hide();
   });
 
   // data checkbox togglemania
