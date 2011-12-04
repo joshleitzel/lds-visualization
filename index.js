@@ -9,7 +9,6 @@
 var http = require('http'),
     _ = require('underscore')._,
     fs = require('fs'),
-    connect = require('connect'),
     express = require('express');
 
 var templates = {
