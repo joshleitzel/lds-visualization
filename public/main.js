@@ -8,7 +8,6 @@ $(document).ready(function () {
 
   // data checkbox togglemania
   form.find('input[name=data]').click(function() {
-    console.log('here');
     if (allInput.is(':checked')) {
       data.filter(':not([value=all],[value=random])').attr('checked', 'checked');
       randomLabel.addClass('disabled');
@@ -22,6 +21,12 @@ $(document).ready(function () {
 
   // pseudo form submission
   form.find('.submit a').click(function () {
-    alert('blue pill or red, neo?');
+    var dataSets = [];
+    data.filter(':not([value=random],[value=all])').each(function () {
+      if ($(this).is(':checked')) {
+        dataSets.push($(this).val());
+      }
+    });
+    console.log(dataSets);
   })
 });
