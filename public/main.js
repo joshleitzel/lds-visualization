@@ -86,7 +86,7 @@ $(document).ready(function () {
     $.post('/process', processData, function (data, textStatus, jqXHR) {
       // `data` should be the path to the graph, relative to the graphs/ directory
       // put the graph into place
-      var url = data.split('"')[1];
+      var url = data.split('GRAPH_PRE')[1].split('GRAPH_POST')[0];
       graph.html('<img src="graphs/' + url + '" />');
     });
   };
