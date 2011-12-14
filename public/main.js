@@ -14,13 +14,17 @@ $(document).ready(function () {
       submitButton = submit.find('a'),
       dataReady = false,
       processReady = false,
-      submitReady = false;
+      submitReady = false,
+      graph = $('#graph .inner');
 
   // load data
   $.get('/data', function (data, textStatus, jqXHR) {
     var data = data.split(',');
+    var count = 0;
     data.forEach(function (dataSet) {
-      dataSets.append('<label><input type="checkbox" name="data" value="' + dataSet + '">' + dataSet + '</label>');
+      if (++count < 5) {
+        dataSets.append('<label><input type="checkbox" name="data" value="' + dataSet + '">' + dataSet + '</label>');
+      }
     });
     dataSets.show();
     loadingData.hide();
@@ -38,7 +42,6 @@ $(document).ready(function () {
     } else {
       data.removeAttr('disabled').closest('label').removeClass('disabled');
     }
-    console.log('here');
     toggleSubmit();
   });
 
@@ -58,21 +61,33 @@ $(document).ready(function () {
     var processData = {},
         dataSets = [];
 
-    data.filter(':not([value=random],[value=all])').each(function () {
+    $('#data-sets input[type=checkbox]').filter(':not([value=random],[value=all])').each(function () {
       if ($(this).is(':checked')) {
         dataSets.push($(this).val());
       }
     });
 
+    if (dataSets.length === 0) {
+      // all or random was checked
+      if (data.filter('[value=all]').is(':checked')) {
+        dataSets.push('all');
+      } else {
+        dataSets.push('random');
+      }
+    }
+
     processData.dataSets = dataSets;
-    processData.process = main.find('input[name=process]').val();
+    processData.process = main.find('input[name=process]:checked').val();
 
     console.log('The following data is /process\'d');
     console.log(processData);
 
     // send to server for R crunch magic
     $.post('/process', processData, function (data, textStatus, jqXHR) {
-      console.log(data);
+      // `data` should be the path to the graph, relative to the graphs/ directory
+      // put the graph into place
+      var url = data.split('"')[1];
+      graph.html('<img src="graphs/' + url + '" />');
     });
   };
 

@@ -13,12 +13,13 @@ var http = require('http'),
     express = require('express');
 
 // Constants
-var DATA_ROOT = 'data/',
+var GRAPHS_DIR = 'graphs/',
+    DATA_ROOT = 'data/',
     DATA_USER = 'uploads', // relative to DATA_ROOT
     SCRIPT_MAP = {
-    cluster : 'r/cluster.r',
-    regression : 'r/regression.r'
-  };
+      cluster : 'r/cluster.r',
+      regression : 'r/regression.r'
+    };
 
 function getTemplate(templateName) {
   return fs.readFileSync('client/' + templateName + '.html').toString().replace('ROOT_PATH', ROOT_PATH);
@@ -55,27 +56,44 @@ server.post('/upload', function (req, res) {
 });
 
 server.post('/process', function (req, res) {
-    var dataSets = req.body.dataSets,
-        process = req.body.process;
+  var dataSets = req.body.dataSets,
+      process = req.body.process;
 
-    if (!_.isArray(dataSets) || (process != 'cluster' && process != 'regression')) {
-      res.end('Error: data sent is not valid');
+  if (!_.isArray(dataSets) || (process != 'cluster' && process != 'regression')) {
+    res.end('Error: data sent is not valid');
+  }
+
+  // if 'all' was chosen
+  if (dataSets === ['all']) {
+    dataSets = ['*'];
+  } else if (dataSets === ['random']) {
+    var i,
+        random = [];
+    for (i = 0; i < 5; i++) {
+      random.push(Math.floor(Math.random() * (103 + 1) + 0));
     }
 
-    // any pre-R processing of the data goes here
+    fs.readdir(DATA_ROOT, function (err, files) {
+      dataSets = _.without(files, DATA_USER);
+      fs.readdir(DATA_ROOT + DATA_USER, function (err, files) {
+        files = _.map(files, function (file) { return DATA_USER + '/' + file; });
+        dataSets = _.union(dataSets, files);
+        res.end(dataSets.join(','));
+      });
+    });
+  }
 
-    var args = _.union([SCRIPT_MAP[process]], dataSets);
-    var rProc = childProcess.spawn('Rcsript', args);
-    rProc.stdout.on('data', function (data) {
-      var responseData = {};
-      // process sqlite response data from R and send it back as JSON
-      res.end({ responseData : responseData });
-    });
-    rProc.stderr.on('data', function (error) {
-      res.end('There was a processing error');
-    });
-    rProc.on('exit', function (exitCode) {
-      console.log('exit', exitCode);
-    });
+  // any pre-R processing of the data goes here
+
+  var args = _.union([SCRIPT_MAP[process]], ['silhouette'], dataSets);
+  console.log('Rscript ' + args.join(' '));
+  var rProc = childProcess.exec('Rscript ' + args.join(' '), function (error, stdout, stderr) {
+    console.log('stdout: ' + stdout);
+    console.log('stderr: ' + stderr);
+    res.end(stdout || stderr);
+    if (error !== null) {
+      console.log('exec error: ' + error);
+    }
   });
+});
 server.listen(1337);
