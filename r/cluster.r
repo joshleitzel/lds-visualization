@@ -125,6 +125,12 @@ graph_filename <- paste(unclass(Sys.time()), '.png', sep = "");
 
 png(paste(graph_path, graph_filename, sep = ""));
 
+
+parseRGB <- function(parseString) {
+  stringSplit <- unlist(strsplit(parseString, ","));
+  rgb(stringSplit[1], stringSplit[2], stringSplit[3], maxColorValue = 255);
+}
+
 if (graph_type == 'silhouette') {
 
   pr173 <- clara(sql.gene_dist, 173);
@@ -143,18 +149,12 @@ if (graph_type == 'silhouette') {
     sql.clusters.ratios,
     sql.clusters.k173,
     main = paste("Bivariate Cluster Plot of Clusters", clustersString),
-    col.p = rgb(col.p[1], col.p[2], col.p[3], maxColorValue = 255),
-    col.txt = rgb(col.txt[1], col.txt[2], col.txt[3], maxColorValue = 255),
-    col.clus = rgb(col.clus[1], col.clus[2], col.clus[3], maxColorValue = 255),
+    col.p = parseRGB(biv.viz.col.p),
+    col.txt = parseRGB(biv.viz.col.txt),
+    col.clus = parseRGB(biv.viz.col.clus),
     verbose = TRUE
   );
 
-}
-
-rgbToColorCode <- function(r, g, b) {
-  HSVColors <- rgb2hsv(r, g, b, maxColorValue = 255);
-  HueOrder <- order(HSVColors[1,], HSVColors[2,], HSVColors[3,]);
-  colors()[ HueOrder[1] ]
 }
 
 dev.off();
