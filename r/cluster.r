@@ -128,9 +128,12 @@ if (graph_type == 'silhouette') {
 
 } else if (graph_type == 'bivariate') {
 
-  png(paste(graph_path, graph_filename, sep = ""));
-  clusplot(sql.clusters.ratios, sql.clusters.k173);
-  dev.off();
+  clusplot(
+    sql.clusters.ratios,
+    sql.clusters.k173,
+    main = paste("Bivariate Cluster Plot of Clusters", clustersString),
+    verbose = TRUE
+  );
 
 }  
 

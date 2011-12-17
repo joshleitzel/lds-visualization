@@ -6,8 +6,13 @@
   <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Signika" />
   <link rel="stylesheet" href="reset.css" />
   <link rel="stylesheet" href="style.css" />
+	<link rel="stylesheet" href="colorpicker.css" type="text/css" />
 
   <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+	<script type="text/javascript" src="colorpicker.js"></script>
+  <script type="text/javascript" src="eye.js"></script>
+  <script type="text/javascript" src="utils.js"></script>
+  <script type="text/javascript" src="layout.js?ver=1.0.2"></script>
   <script type="text/javascript" src="main.js"></script>
 </head>
 <body>
@@ -234,6 +239,17 @@
                 <option value="cluster172">Cluster 172</option>
                 <option value="cluster173">Cluster 173</option>
               </select>
+              <p>Colors</p>
+              <div class="visual">
+                <label>Observation Points</label>
+                <div class="color-container">
+                  <div class="color" data-default="9,178,230">
+                    <div class="colorsub">
+                      <input data-visual="true" type="hidden" name="bivariate-colp" />
+                    </div>
+                  </div>
+                </div>
+              </div>
             </fieldset>
           </div>
           <div class="graph-option" id="graph-details-another">

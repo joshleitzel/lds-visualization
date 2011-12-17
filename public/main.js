@@ -42,12 +42,34 @@ $(document).ready(function () {
     });
     $('input[name=randomClusterNum]').val(randomClusters.join(','));
     toggleSubmit();
-  })
+  });
 
   $('select[name=clusters]').click(function () {
     $('input[name=random5]').removeAttr('checked');
     toggleSubmit();
-  })
+  });
+
+  $('div.color').each(function () {
+    var $this = $(this);
+    var defaultRGB = $this.attr('data-default');
+    var defaultRGBSplit = defaultRGB.split(',');
+    $this.find('.colorsub').css('backgroundColor', 'rgb(' + defaultRGB + ')');
+    $this.ColorPicker({
+     color: '#' + rgbToHex(defaultRGBSplit[0], defaultRGBSplit[1], defaultRGBSplit[2]),
+     onShow: function (colpkr) {
+       $(colpkr).fadeIn(500);
+       return false;
+     },
+     onHide: function (colpkr) {
+       $(colpkr).fadeOut(500);
+       return false;
+     },
+     onChange: function (hsb, hex, rgb) {
+       $this.find('.colorsub').css('backgroundColor', '#' + hex);
+       $this.find('input').val(rgb.r + ',' + rgb.g + ',' + rgb.b);
+     }
+    });
+  });
 
   // pseudo main submission
   $('#form-submit').click(function () {
@@ -62,6 +84,11 @@ $(document).ready(function () {
         i;
 
     processData.graph = $('#graph-list input:checked').val();
+
+    processData.visual = {};
+    $('#graph-details-' + processData.graph + ' input[data-visual=true]').each(function () {
+      console.log($(this).val());
+    });
 
     $('select[name=clusters] option:selected').each(function () {
       clusters.push($(this).val().split('cluster')[1]);
@@ -82,6 +109,16 @@ $(document).ready(function () {
       $('#graph .inner').append('<img src="graphs/' + url + '" />');
     });
   });
+
+  // credit: http://www.javascripter.net/faq/rgbtohex.htm
+  function rgbToHex(R,G,B) {return toHex(R)+toHex(G)+toHex(B)}
+  function toHex(n) {
+   n = parseInt(n,10);
+   if (isNaN(n)) return "00";
+   n = Math.max(0,Math.min(n,255));
+   return "0123456789ABCDEF".charAt((n-n%16)/16)
+        + "0123456789ABCDEF".charAt(n%16);
+  }
 
   // submit button togglemania
   function toggleSubmit() {
