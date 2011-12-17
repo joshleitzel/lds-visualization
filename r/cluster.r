@@ -50,18 +50,38 @@ sql.info.final_clusters.clusters_table <- "k173";
 if (debug) print('e');
 
 # If > 0, limits the DB queries to a maximum number of genes
-geneLimit <- 50;
-
+geneLimit <- 0;
 if (geneLimit > 0) {
   sqlLimitAppend <- paste("LIMIT", geneLimit);
 }
 
+# If length > 0 and no geneLimit, limits the DB queries to specific clusters
+clustersSubset <- c(2, 5, 10);
+if (geneLimit <= 0 && length(clustersSubset) > 0) {
+  sqlClusterNums <- paste(clustersSubset, collapse=",");
+  sqlClusterAppend <- paste("WHERE out IN", sqlClusterNums);
+}
+
 sql.clusters <- dbConnect(dbDriver, dbname = sql.info.final_clusters);
 
-sql.clusters.ratios <- dbGetQuery(sql.clusters, paste("SELECT * FROM ba_ratios", sqlLimitAppend));
+if (length(clustersSubset) > 0) {
+  print("here");
+  sql.clusters.ratios <- dbGetQuery(
+    sql.clusters,
+    paste("
+      SELECT *
+      FROM ba_ratios
+      INNER JOIN k173
+      ON ba_ratios.row_names=k173.row_names
+      WHERE out IN (2,5,19)
+    ")
+  );
+} else {
+  sql.clusters.ratios <- dbGetQuery(sql.clusters, paste("SELECT * FROM ba_ratios", sqlLimitAppend));
+}
 sql.clusters.ratios <- sql.clusters.ratios[-c(1,53,54)];
 
-sql.clusters.k173 <- dbGetQuery(sql.clusters, paste("SELECT out FROM k173", sqlLimitAppend));
+sql.clusters.k173 <- dbGetQuery(sql.clusters, paste("SELECT out FROM k173 WHERE out IN (2,5,19)"));
 sql.clusters.k173 <- as.vector(as.matrix(sql.clusters.k173));
 
 sql.clusters.ratios <- sql.clusters.ratios[-c(1,53,54)];
