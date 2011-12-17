@@ -6,9 +6,7 @@ debug <- FALSE;
 sink("r/cluster.log");
 
 # Data frames
-load("data/baa.ratios.rda"); # into variable `ratios`
-
-print(paste("Number of rows in `ratios`:", nrow(ratios)));
+#load("data/baa.ratios.rda"); # into variable `ratios`
 
 if (debug) print('a');
 
@@ -51,22 +49,28 @@ sql.info.final_clusters.clusters_table <- "k173";
 
 if (debug) print('e');
 
+# If > 0, limits the DB queries to a maximum number of genes
+geneLimit <- 50;
+
+if (geneLimit > 0) {
+  sqlLimitAppend <- paste("LIMIT", geneLimit);
+}
+
 sql.clusters <- dbConnect(dbDriver, dbname = sql.info.final_clusters);
-sql.clusters.ratios <- dbGetQuery(sql.clusters, "SELECT * FROM ba_ratios limit 100");
-sql.clusters.k173 <- dbGetQuery(sql.clusters, "SELECT * FROM k173 limit 100");
-# 
-# 
-# clustVec = c();
-# for (i in sql.clusters.k173) {
-#   clustVec = cbind(clustVec, i);
-# }
 
-# ratioVec = c();
-# for (i in sql.clusters.ratios) {
-#   ratioVec = append(ratioVec, i);
-# }
+sql.clusters.ratios <- dbGetQuery(sql.clusters, paste("SELECT * FROM ba_ratios", sqlLimitAppend));
+sql.clusters.ratios <- sql.clusters.ratios[-c(1,53,54)];
 
-# Find the specific dist for this gene
+sql.clusters.k173 <- dbGetQuery(sql.clusters, paste("SELECT out FROM k173", sqlLimitAppend));
+sql.clusters.k173 <- as.vector(as.matrix(sql.clusters.k173));
+
+sql.clusters.ratios <- sql.clusters.ratios[-c(1,53,54)];
+
+print(paste("Number of rows in `sql.clusters.ratios`:", nrow(sql.clusters.ratios)));
+print(paste("Length of `sql.clusters.ratios`:", length(sql.clusters.ratios)));
+print(paste("Number of rows in `sql.clusters.k173`:", nrow(sql.clusters.k173)));
+print(paste("Length of `sql.clusters.k173`:", length(sql.clusters.k173)));
+print(sql.clusters.k173);
 
 gene <- "GBAA4059";
 sql.dist_db <- dbConnect(dbDriver, dbname = paste('clusters/dist/', gene, '.sqlite', sep = ""));
@@ -79,11 +83,9 @@ if (debug) print('f');
 graph_path <- paste(GRAPHS_DIR, '/', sep = "");
 graph_filename <- paste(unclass(Sys.time()), '.png', sep = "");
 
-# Bivariate Cluster Plot
-
 png(paste(graph_path, graph_filename, sep = ""));
 
-if (graph_type == 'silhouette') {
+if (graph_type != 'silhouette') {
 
   pr173 <- clara(sql.gene_dist, 173);
   str(si <- silhouette(pr173));
@@ -92,13 +94,8 @@ if (graph_type == 'silhouette') {
 
 } else {
 
-  print(paste("Length of `sql.clusters.k173` vector:", length(sql.clusters.ratios)));
-  print(clustVec);
-  print(sql.clusters.ratios);
-
   png(paste(graph_path, graph_filename, sep = ""));
-#  clusplot(ratioVec, clustVec)
-  clusplot(sql.clusters.ratios, clustVec);
+  clusplot(sql.clusters.ratios, sql.clusters.k173);
   dev.off();
 
 }  
