@@ -51,7 +51,7 @@ $(document).ready(function () {
 
   $('div.color').each(function () {
     var $this = $(this);
-    var defaultRGB = $this.attr('data-default');
+    var defaultRGB = $this.find('input').val();
     var defaultRGBSplit = defaultRGB.split(',');
     $this.find('.colorsub').css('backgroundColor', 'rgb(' + defaultRGB + ')');
     $this.ColorPicker({
@@ -85,9 +85,9 @@ $(document).ready(function () {
 
     processData.graph = $('#graph-list input:checked').val();
 
-    processData.visual = {};
+    processData.visual = [];
     $('#graph-details-' + processData.graph + ' input[data-visual=true]').each(function () {
-      console.log($(this).val());
+      processData.visual.push($(this).attr('name') + '=' + $(this).val());
     });
 
     $('select[name=clusters] option:selected').each(function () {

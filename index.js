@@ -56,16 +56,18 @@ server.post('/upload', function (req, res) {
 });
 
 server.post('/process', function (req, res) {
-  console.log('process');
   var clusters = req.body.clusters ? 'clusters=' + req.body.clusters : '',
       graph = 'graph=' + req.body.graph,
-      process = req.body.process;
+      process = req.body.process,
+      visual = req.body.visual;
+
+  console.log(visual);
 
   if (process != 'cluster' && process != 'regression') {
     res.end('Error: data sent is not valid');
   }
 
-  var args = _.union([SCRIPT_MAP[process]], graph, clusters);
+  var args = _.union([SCRIPT_MAP[process]], graph, clusters, visual);
   console.log('Rscript ' + args.join(' '));
   var rProc = childProcess.exec('Rscript ' + args.join(' '), function (error, stdout, stderr) {
     console.log('stdout: ' + stdout);

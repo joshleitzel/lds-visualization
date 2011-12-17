@@ -38,6 +38,8 @@ for (arg in args) {
       graph_type <- val;
     } else if (key == 'clusters') {
       clustersString <- val;
+    } else if (key == 'bivariate-colp') {
+      biv.viz.col.p <- val;
     }
   }
 }
@@ -128,14 +130,26 @@ if (graph_type == 'silhouette') {
 
 } else if (graph_type == 'bivariate') {
 
+  # get visual parameters
+  col.p <- unlist(strsplit(biv.viz.col.p, ","));
+  print(col.p);
+  print(col.p[1]);
+
   clusplot(
     sql.clusters.ratios,
     sql.clusters.k173,
     main = paste("Bivariate Cluster Plot of Clusters", clustersString),
+    col.p = rgb(col.p[1], col.p[2], col.p[3], maxColorValue = 255),
     verbose = TRUE
   );
 
-}  
+}
+
+rgbToColorCode <- function(r, g, b) {
+  HSVColors <- rgb2hsv(r, g, b, maxColorValue = 255);
+  HueOrder <- order(HSVColors[1,], HSVColors[2,], HSVColors[3,]);
+  colors()[ HueOrder[1] ]
+}
 
 dev.off();
 
