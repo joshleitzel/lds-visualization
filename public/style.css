@@ -167,16 +167,20 @@ label, input[type=submit] {
 #options fieldset {
   font-size: 90%;
 }
-#options fieldset > * {
-  margin-left: 0.5em;
-  margin-right: 0.5em;
-}
-#options fieldset > legend {
-  margin: 0;
-  padding-bottom: 1em;
-}
 #options fieldset + fieldset {
   margin-top: 1em;
+}
+#options fieldset legend {
+  border-bottom: 1px solid #eee;
+  color: #878787;
+  display: block;
+  font-size: 110%;
+  margin-bottom: 1em;
+  padding-bottom: 0.5em;
+  width: 100%;
+}
+#options fieldset .fieldset-inner {
+  padding: 1em;
 }
 #options label, select {
   display: block;
@@ -189,6 +193,10 @@ label, input[type=submit] {
 }
 #options .visual {
   clear: both;
+}
+#options .visual {
+  margin: 0.5em 0;
+  overflow: hidden;
 }
 #options .visual label {
   float: left;
