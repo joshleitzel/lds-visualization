@@ -2,6 +2,13 @@ require(RSQLite);
 require(cluster);
 
 debug <- FALSE;
+# Open a sink for logging
+sink("r/cluster.log");
+
+# Data frames
+load("data/baa.ratios.rda"); # into variable `ratios`
+
+print(paste("Number of rows in `ratios`:", nrow(ratios)));
 
 if (debug) print('a');
 
@@ -45,8 +52,19 @@ sql.info.final_clusters.clusters_table <- "k173";
 if (debug) print('e');
 
 sql.clusters <- dbConnect(dbDriver, dbname = sql.info.final_clusters);
-sql.clusters.ratios <- dbReadTable(sql.clusters, "ba_ratios");
-sql.clusters.k173 <- dbGetQuery(sql.clusters, "SELECT out FROM k173");
+sql.clusters.ratios <- dbGetQuery(sql.clusters, "SELECT * FROM ba_ratios limit 100");
+sql.clusters.k173 <- dbGetQuery(sql.clusters, "SELECT * FROM k173 limit 100");
+# 
+# 
+# clustVec = c();
+# for (i in sql.clusters.k173) {
+#   clustVec = cbind(clustVec, i);
+# }
+
+# ratioVec = c();
+# for (i in sql.clusters.ratios) {
+#   ratioVec = append(ratioVec, i);
+# }
 
 # Find the specific dist for this gene
 
@@ -61,47 +79,32 @@ if (debug) print('f');
 graph_path <- paste(GRAPHS_DIR, '/', sep = "");
 graph_filename <- paste(unclass(Sys.time()), '.png', sep = "");
 
-# Silhouette
+# Bivariate Cluster Plot
+
+png(paste(graph_path, graph_filename, sep = ""));
+
 if (graph_type == 'silhouette') {
-  #cG <- new("clusterGraph", clusters=list(a=c(1:10), b=c(11:13), c=c(14:20), d=c(21, 22)));
 
-  ## Use the silhouette widths for assessing the best number of clusters,
-  ## following a one-dimensional example from Christian Hennig :
-  ##
-  # x <- c(rnorm(50), rnorm(50,mean=5), rnorm(30,mean=15))
-  # asw <- numeric(20)
-  # ## Note that "k=1" won't work!
-  # for (k in 2:20)
-  #   asw[k] <- pam(x, k) $ silinfo $ avg.width
-  # k.best <- which.max(asw)
-  # cat("silhouette-optimal number of clusters:", k.best, "\n")
-  # 
-  # png(paste(graph_path, graph_filename, sep = ""));
-  # plot(1:20, asw, type= "h", main = "pam() clustering assessment",
-  #      xlab= "k  (# clusters)", ylab = "average silhouette width")
-  # axis(1, k.best, paste("best",k.best,sep="\n"), col = "red", col.axis = "red")
-  # dev.off();
+  pr173 <- clara(sql.gene_dist, 173);
+  str(si <- silhouette(pr173));
+  (ssi <- summary(si));
+  plot(si);
 
-# pr4 <- pam(sql.gene_dist, 173)
-print(class(sql.gene_dist));
-print(nrow(sql.gene_dist));
-print(ncol(sql.gene_dist));
-  
+} else {
+
+  print(paste("Length of `sql.clusters.k173` vector:", length(sql.clusters.ratios)));
+  print(clustVec);
+  print(sql.clusters.ratios);
+
   png(paste(graph_path, graph_filename, sep = ""));
-  clusplot(as.matrix(sql.gene_dist), sql.clusters.k173, diss = TRUE);
+#  clusplot(ratioVec, clustVec)
+  clusplot(sql.clusters.ratios, clustVec);
   dev.off();
-  
-  # str(si <- silhouette(as.matrix(sql.clusters.k173), sql.gene_dist))
-  #   (ssi <- summary(si))
-  #   png(paste(graph_path, graph_filename, sep = ""));
-  #   plot(si) # silhouette plot
-  #   plot(si, col = c("red", "green", "blue", "purple"))# with cluster-wise coloring
-  #   dev.off();
-  
-}
 
-##demopam <- pam(dis.bc, k=173)
+}  
 
+dev.off();
 
+sink();
 
 print(paste("GRAPH_PRE", graph_filename, "GRAPH_POST", sep = ""));
