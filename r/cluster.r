@@ -1,7 +1,7 @@
 require(RSQLite);
 require(cluster);
 
-debug <- FALSE;
+debug <- TRUE;
 # Open a sink for logging
 sink("r/cluster.log");
 
@@ -23,14 +23,21 @@ args <- commandArgs();
 graph_type <- "undefined";
 gene <- "undefined";
 
+clustersString <- c();
+
+print("args:");
 for (arg in args) {
+  print(arg);
   splt <- strsplit(arg, "--");
-  status <- sapply(splt, function (x) if(length(x) < 2) "custom");
+  status <- sapply(splt, function (x) if (length(x) < 2) "custom");
   if (status == 'custom') {
-    if (arg == 'silhouette') {
-      graph_type <- arg;
-    } else {
-      gene <- arg;
+    splt <- unlist(strsplit(arg, "="));
+    key <- splt[1];
+    val <- splt[2];
+    if (key == 'graph') {
+      graph_type <- val;
+    } else if (key == 'clusters') {
+      clustersString <- val;
     }
   }
 }
@@ -51,20 +58,27 @@ if (debug) print('e');
 
 # If > 0, limits the DB queries to a maximum number of genes
 geneLimit <- 0;
+sqlLimitAppend <- "";
 if (geneLimit > 0) {
   sqlLimitAppend <- paste("LIMIT", geneLimit);
 }
 
-# If length > 0 and no geneLimit, limits the DB queries to specific clusters
-clustersSubset <- c(2, 5, 10);
-if (geneLimit <= 0 && length(clustersSubset) > 0) {
-  sqlClusterNums <- paste(clustersSubset, collapse=",");
-  sqlClusterAppend <- paste("WHERE out IN (", sqlClusterNums, ")", sep="");
+if (debug) print('r');
+
+sqlClusterAppend <- "";
+if (length(clustersString) > 0) {
+  sqlClusterAppend <- paste("WHERE out IN (", clustersString, ")", sep="");
 }
+
+
+if (debug) print('s');
 
 sql.clusters <- dbConnect(dbDriver, dbname = sql.info.final_clusters);
 
-if (length(clustersSubset) > 0) {
+
+if (debug) print('t');
+
+if (length(clustersString) > 0) {
   sql.clusters.ratios <- dbGetQuery(
     sql.clusters,
     paste("SELECT *
@@ -77,6 +91,9 @@ if (length(clustersSubset) > 0) {
   sql.clusters.ratios <- dbGetQuery(sql.clusters, paste("SELECT * FROM ba_ratios", sqlLimitAppend));
 }
 sql.clusters.ratios <- sql.clusters.ratios[-c(1,53,54)];
+
+
+if (debug) print('z');
 
 sql.clusters.k173 <- dbGetQuery(sql.clusters, paste("SELECT out FROM k173", sqlClusterAppend));
 sql.clusters.k173 <- as.vector(as.matrix(sql.clusters.k173));
@@ -102,14 +119,14 @@ graph_filename <- paste(unclass(Sys.time()), '.png', sep = "");
 
 png(paste(graph_path, graph_filename, sep = ""));
 
-if (graph_type != 'silhouette') {
+if (graph_type == 'silhouette') {
 
   pr173 <- clara(sql.gene_dist, 173);
   str(si <- silhouette(pr173));
   (ssi <- summary(si));
   plot(si);
 
-} else {
+} else if (graph_type == 'bivariate') {
 
   png(paste(graph_path, graph_filename, sep = ""));
   clusplot(sql.clusters.ratios, sql.clusters.k173);

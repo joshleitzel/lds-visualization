@@ -56,36 +56,16 @@ server.post('/upload', function (req, res) {
 });
 
 server.post('/process', function (req, res) {
-  var dataSets = req.body.dataSets,
+  console.log('process');
+  var clusters = req.body.clusters ? 'clusters=' + req.body.clusters : '',
+      graph = 'graph=' + req.body.graph,
       process = req.body.process;
 
-  if (!_.isArray(dataSets) || (process != 'cluster' && process != 'regression')) {
+  if (process != 'cluster' && process != 'regression') {
     res.end('Error: data sent is not valid');
   }
 
-  // if 'all' was chosen
-  if (dataSets === ['all']) {
-    dataSets = ['*'];
-  } else if (dataSets === ['random']) {
-    var i,
-        random = [];
-    for (i = 0; i < 5; i++) {
-      random.push(Math.floor(Math.random() * (103 + 1) + 0));
-    }
-
-    fs.readdir(DATA_ROOT, function (err, files) {
-      dataSets = _.without(files, DATA_USER);
-      fs.readdir(DATA_ROOT + DATA_USER, function (err, files) {
-        files = _.map(files, function (file) { return DATA_USER + '/' + file; });
-        dataSets = _.union(dataSets, files);
-        res.end(dataSets.join(','));
-      });
-    });
-  }
-
-  // any pre-R processing of the data goes here
-
-  var args = _.union([SCRIPT_MAP[process]], ['silhouette'], dataSets);
+  var args = _.union([SCRIPT_MAP[process]], graph, clusters);
   console.log('Rscript ' + args.join(' '));
   var rProc = childProcess.exec('Rscript ' + args.join(' '), function (error, stdout, stderr) {
     console.log('stdout: ' + stdout);

@@ -157,6 +157,37 @@ label, input[type=submit] {
   padding: 1em 0;
 }
 
+/* Options */
+#options {
+  display: none;
+}
+#options .graph-option {
+  display: none;
+}
+#options fieldset {
+  font-size: 90%;
+}
+#options fieldset > * {
+  margin-left: 0.5em;
+  margin-right: 0.5em;
+}
+#options fieldset > legend {
+  margin: 0;
+  padding-bottom: 1em;
+}
+#options fieldset + fieldset {
+  margin-top: 1em;
+}
+#options label, select {
+  display: block;
+}
+#options select[multiple] {
+  width: 90%;
+}
+#options select[multiple] option {
+  padding: 0.5em;
+}
+
 /* Graph */
 #graph {
   border: 1px solid #eee;
@@ -165,6 +196,16 @@ label, input[type=submit] {
 }
 #graph .inner {
   padding: 1em;
+}
+#graph .inner p {
+  color: gray;
+  margin: 2em auto;
+  text-align: center;
+}
+#graph-loading {
+  background: url(loading.gif) no-repeat bottom center;
+  display: none;
+  height: 100px;
 }
 
 /* Footer */
