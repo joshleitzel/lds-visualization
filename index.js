@@ -33,21 +33,34 @@ server.use(express.bodyParser())
 server.get('/cleargraphs', function (req, res) {
   console.log('Clearing graphs...');
   childProcess.exec('rm public/graphs/*.png', function () {
-    res.end('done');
+    childProcess.exec('rm public/graphs/*.pdf', function () {
+      res.end('done');
+    });
   })
 });
 
 server.get('/graphs', function (req, res) {
   console.log('Getting graphs...');
   fs.readdir('public/graphs', function (err, files) {
-    res.end(_.map(_.without(files, 'README'), function (file) { return 'graphs/' + file; }).join(','));
+    res.end(_.map(_.filter(files, function (file) { return file.substring(file.length - 4, file.length) === '.png'; }), function (file) { return 'graphs/' + file; }).join(','));
   });
 });
 
 server.get('/tar', function (req, res) {
-  console.log('Building tarball...');
-  var publicTarURL = 'tmp/graphs_' + new Date().getTime() + '.tar';
-  childProcess.exec('tar czf public/' + publicTarURL + ' public/graphs', function (error, stdout, stderr) {
+  console.log('Building tarball of pngs...');
+  var publicTarURL = 'tmp/graphs_png_' + new Date().getTime() + '.tar';
+  childProcess.exec('tar czf public/' + publicTarURL + ' public/graphs/*.png', function (error, stdout, stderr) {
+    if (error) {
+      throw error;
+    }
+    res.end(publicTarURL);
+  });
+});
+
+server.get('/pdf', function (req, res) {
+  console.log('Building tarball of pdfs...');
+  var publicTarURL = 'tmp/graphs_pdf_' + new Date().getTime() + '.tar';
+  childProcess.exec('tar czf public/' + publicTarURL + ' public/graphs/*.pdf', function (error, stdout, stderr) {
     if (error) {
       throw error;
     }

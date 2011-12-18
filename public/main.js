@@ -63,6 +63,7 @@ $(document).ready(function () {
     $('#graph-history ul').prepend('<li><a href="' + url + '">' + url + '</a></li>');
     $('#no-graphs-yet').hide();
     $('#graph-history-clear').show();
+    $('#graph-tools').show();
   }
 
   function setGraph(url) {
@@ -124,6 +125,15 @@ $(document).ready(function () {
     });
     return false;
   });
+  $('#download-pdf a').click(function () {
+    var link = $(this);
+    $.get('/pdf', function (tarURL, textStatus, jqXHR) {
+      link.attr('href', tarURL);
+      window.location.href = tarURL;
+    });
+    return false;
+  });
+
 
   // pseudo main submission
   $('#form-submit').click(function () {

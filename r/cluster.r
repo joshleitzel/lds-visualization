@@ -123,10 +123,10 @@ if (debug) print('f');
 
 # Plot graph depending on what graph type was requested
 
-graph_path <- paste(GRAPHS_DIR, '/', sep = "");
-graph_filename <- paste(unclass(Sys.time()), "_", sample(5000:50000, 1), '.png', sep = "");
-
-png(paste(graph_path, graph_filename, sep = ""));
+graph.path <- paste(GRAPHS_DIR, '/', sep = "");
+graph.salt <- paste(unclass(Sys.time()), "_", sample(5000:50000, 1), sep="");
+graph.filename.png <- paste(graph.salt, '.png', sep = "");
+graph.filename.pdf <- paste(graph.salt, '.pdf', sep = "");
 
 if (graph_type == 'silhouette') {
 
@@ -142,20 +142,27 @@ if (graph_type == 'silhouette') {
   col.txt <- unlist(strsplit(biv.viz.col.txt, ","));
   col.clus <- unlist(strsplit(biv.viz.col.clus, ","));
 
-  if (biv.viz.font != 'arial') {
-    print(paste("Font:", biv.viz.font));
-    par(family = biv.viz.font);
+  clustFunc <- function () {
+    if (biv.viz.font != 'arial') {
+      print(paste("Font:", biv.viz.font));
+      par(family = biv.viz.font);
+    }
+    clusplot(
+      sql.clusters.ratios,
+      sql.clusters.k173,
+      main = paste("Bivariate Cluster Plot of Clusters", clustersString),
+      col.p = helpers.parseRGB(biv.viz.col.p),
+      col.txt = helpers.parseRGB(biv.viz.col.txt),
+      col.clus = helpers.parseRGB(biv.viz.col.clus),
+      verbose = TRUE
+    );
   }
 
-  clusplot(
-    sql.clusters.ratios,
-    sql.clusters.k173,
-    main = paste("Bivariate Cluster Plot of Clusters", clustersString),
-    col.p = helpers.parseRGB(biv.viz.col.p),
-    col.txt = helpers.parseRGB(biv.viz.col.txt),
-    col.clus = helpers.parseRGB(biv.viz.col.clus),
-    verbose = TRUE
-  );
+  png(paste(graph.path, graph.filename.png, sep = ""));
+  clustFunc();
+
+  pdf(file = paste(graph.path, graph.filename.pdf, sep = ""));
+  clustFunc();
 
 }
 
@@ -163,4 +170,4 @@ dev.off();
 
 sink();
 
-print(paste("GRAPH_PRE", graph_filename, "GRAPH_POST", sep = ""));
+print(paste("GRAPH_PRE", graph.filename.png, "GRAPH_POST", sep = ""));
