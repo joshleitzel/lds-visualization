@@ -34,7 +34,7 @@ $(document).ready(function () {
     graphs.forEach(function (graphURL) {
       addGraphToHistory(graphURL);
     });
-    $('#graph-history h3').append(' <span class="count">(' + data.length + ')</span>');
+    $('#graph-history h3').append(' <span class="count">(' + graphs.length + ')</span>');
   });
   $('#graph-history li a').live('click', function () {
     setGraph($(this).attr('href'));
