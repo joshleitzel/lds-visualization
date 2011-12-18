@@ -152,15 +152,10 @@ if (graph_type == 'silhouette') {
 
 } else if (graph_type == 'bivariate') {
 
-  # get visual parameters
-  col.p <- unlist(strsplit(biv.viz.col.p, ","));
-  col.txt <- unlist(strsplit(biv.viz.col.txt, ","));
-  col.clus <- unlist(strsplit(biv.viz.col.clus, ","));
-
   if (biv.viz.color == TRUE) {
-    clusColor <- c(helpers.parseRGB(biv.viz.col.clus), helpers.parseRGB(biv.viz.col.clus2), helpers.parseRGB(biv.viz.col.clus3), helpers.parseRGB(biv.viz.col.clus4));
+    biv.viz.col.clus <- c(helpers.parseRGB(biv.viz.col.clus), helpers.parseRGB(biv.viz.col.clus2), helpers.parseRGB(biv.viz.col.clus3), helpers.parseRGB(biv.viz.col.clus4));
   } else {
-    clusColor <- helpers.parseRGB(biv.viz.col.clus);
+    biv.viz.col.clus <- helpers.parseRGB(biv.viz.col.clus);
   }
 
   clustFunc <- function () {
@@ -172,7 +167,7 @@ if (graph_type == 'silhouette') {
       main = paste("Bivariate Cluster Plot of Clusters", clustersString),
       col.p = helpers.parseRGB(biv.viz.col.p),
       col.txt = helpers.parseRGB(biv.viz.col.txt),
-      col.clus = clusColor,
+      col.clus = biv.viz.col.clus,
       verbose = TRUE,
       shade = biv.viz.shade,
       color = biv.viz.color
