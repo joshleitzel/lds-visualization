@@ -280,13 +280,22 @@ div.color .colorsub {
 
 /* Graph History */
 #graph-history {
-  width: 250px;
+  width: 275px;
 }
 #graph-history .inner {
   padding: 1em;
 }
 #graph-history h3 {
   margin-bottom: 1em;
+}
+#graph-history h3 .count {
+  color: #A9A9A9;
+}
+#graph-history h3 .count:before {
+  content: '(';
+}
+#graph-history h3 .count:after {
+  content: ')';
 }
 #graph-history ul {
   max-height: 300px;
@@ -303,6 +312,17 @@ div.color .colorsub {
 #graph-history li a:hover {
   background: #1D4499;
   color: #FAFAFA;
+}
+#graph-history li a.highlight {
+  background: #fff;
+  padding-left: 0;
+}
+#graph-history li a.highlight:hover {
+  color: #1D4499;
+}
+#graph-history li a.highlight:before {
+  color: #CCC;
+  content: '← ';
 }
 #graph-history li + li {
   border-top: 1px solid #E9DAF8;

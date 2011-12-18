@@ -34,9 +34,10 @@ $(document).ready(function () {
     graphs.forEach(function (graphURL) {
       addGraphToHistory(graphURL);
     });
-    $('#graph-history h3').append(' <span class="count">(' + graphs.length + ')</span>');
+    $('#graph-history h3').append(' <span class="count">' + graphs.length + '</span>');
   });
-  $('#graph-history li a').live('click', function () {
+  $('#graph-history li a').live('click', function (e) {
+    e.preventDefault();
     setGraph($(this).attr('href'));
     return false;
   });
@@ -48,6 +49,8 @@ $(document).ready(function () {
   function setGraph(url) {
     $('#graph-will-load-here, #graph-loading').hide();
     $('#graph-container').html('<img src="' + url + '" />');
+    $('#graph-history li a').removeClass('highlight');
+    $('#graph-history a[href="' + url + '"]').addClass('highlight');
   }
 
   $('input[name=random5]').click(function () {
@@ -127,8 +130,12 @@ $(document).ready(function () {
       // `data` should be the path to the graph, relative to the graphs/ directory
       // put the graph into place
       var url = data.split('GRAPH_PRE')[1].split('GRAPH_POST')[0];
-      setGraph('graphs/' + url);
       addGraphToHistory('graphs/' + url);
+      setGraph('graphs/' + url);
+      $('#graph-history h3 .count').each(function () {
+        var count = parseInt($(this).text());
+        $(this).text(++count);
+      })
     });
   });
 
