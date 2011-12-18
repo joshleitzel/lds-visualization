@@ -20,7 +20,7 @@ $(document).ready(function () {
   $.get('/graphs', function (graphs, textStatus, jqXHR) {
     graphs = graphs.split(',');
     graphs.forEach(function (graphURL) {
-      $('#graph-list ul').prepend('<li><a href="' + graphURL + '">' + graphURL + '</a></li>');
+      addGraphToHistory(graphURL);
     });
   });
 
@@ -39,8 +39,12 @@ $(document).ready(function () {
     return false;
   });
 
+  function addGraphToHistory(url) {
+    $('#graph-list ul').prepend('<li><a href="' + url + '">' + url + '</a></li>');
+  }
+
   function setGraph(url) {
-    $('#graph-will-load-here').hide();
+    $('#graph-will-load-here, #graph-loading').hide();
     $('#graph-container').html('<img src="' + url + '" />');
   }
 
@@ -121,8 +125,8 @@ $(document).ready(function () {
       // `data` should be the path to the graph, relative to the graphs/ directory
       // put the graph into place
       var url = data.split('GRAPH_PRE')[1].split('GRAPH_POST')[0];
-      $('#graph-loading').hide();
-      $('#graph .inner').append('<img src="graphs/' + url + '" />');
+      setGraph('graphs/' + url);
+      addGraphToHistory('graphs/' + url);
     });
   });
 
