@@ -73,13 +73,14 @@ server.post('/process', function (req, res) {
   var clusters = req.body.clusters ? 'clusters=' + req.body.clusters : '',
       graph = 'graph=' + req.body.graph,
       process = req.body.process,
-      visual = req.body.visual;
+      visual = req.body.visual,
+      options = req.body.options;
 
   if (process != 'cluster' && process != 'regression') {
     res.end('Error: data sent is not valid');
   }
 
-  var args = _.union([SCRIPT_MAP[process]], graph, clusters, visual);
+  var args = _.union([SCRIPT_MAP[process]], graph, clusters, visual, options);
   console.log('Invoking Rscript ' + args.join(' '));
   childProcess.exec('Rscript ' + args.join(' '), function (error, stdout, stderr) {
     if (error) {

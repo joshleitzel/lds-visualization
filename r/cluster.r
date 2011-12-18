@@ -27,6 +27,10 @@ gene <- "undefined";
 
 clustersString <- c();
 
+# Initialize some args for later
+biv.viz.shade <- FALSE;
+biv.viz.color <- FALSE;
+
 print("args:");
 for (arg in args) {
   print(arg);
@@ -46,8 +50,18 @@ for (arg in args) {
       biv.viz.col.txt <- val;
     } else if (key == 'bivariate-colclus') {
       biv.viz.col.clus <- val;
+    } else if (key == 'bivariate-colclus2') {
+      biv.viz.col.clus2 <- val;
+    } else if (key == 'bivariate-colclus3') {
+      biv.viz.col.clus3 <- val;
+    } else if (key == 'bivariate-colclus4') {
+      biv.viz.col.clus4 <- val;
     } else if (key == 'bivariate-fontfamily') {
       biv.viz.font <- val;
+    } else if (key == 'bivariate-options-shade') {
+      biv.viz.shade <- TRUE;
+    } else if (key == 'bivariate-options-color') {
+      biv.viz.color <- TRUE;
     }
   }
 }
@@ -143,6 +157,12 @@ if (graph_type == 'silhouette') {
   col.txt <- unlist(strsplit(biv.viz.col.txt, ","));
   col.clus <- unlist(strsplit(biv.viz.col.clus, ","));
 
+  if (biv.viz.color == TRUE) {
+    clusColor <- c(helpers.parseRGB(biv.viz.col.clus), helpers.parseRGB(biv.viz.col.clus2), helpers.parseRGB(biv.viz.col.clus3), helpers.parseRGB(biv.viz.col.clus4));
+  } else {
+    clusColor <- helpers.parseRGB(biv.viz.col.clus);
+  }
+
   clustFunc <- function () {
     print(paste("Font:", biv.viz.font));
     par(family = biv.viz.font);
@@ -152,8 +172,10 @@ if (graph_type == 'silhouette') {
       main = paste("Bivariate Cluster Plot of Clusters", clustersString),
       col.p = helpers.parseRGB(biv.viz.col.p),
       col.txt = helpers.parseRGB(biv.viz.col.txt),
-      col.clus = helpers.parseRGB(biv.viz.col.clus),
-      verbose = TRUE
+      col.clus = clusColor,
+      verbose = TRUE,
+      shade = biv.viz.shade,
+      color = biv.viz.color
     );
   }
 

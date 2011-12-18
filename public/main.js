@@ -161,8 +161,17 @@ $(document).ready(function () {
         if ($this.attr('type') === 'radio') {
           processData.visual.push($name + "=" + $('input[data-visual=true][name=' + $name + ']:checked').val());
         } else {
-          processData.visual.push($this.attr('name') + '=' + $this.val());
+          processData.visual.push($name + '=' + $this.val());
         }
+      }
+    });
+
+    // Options
+    processData.options = [];
+    $('#graph-details-' + processData.graph + ' input[data-options=true]').each(function () {
+      var $this = $(this);
+      if ($this.is(':checked')) {
+        processData.options.push($this.attr('name') + '=true');
       }
     });
 
