@@ -147,6 +147,11 @@ if (graph_type == 'silhouette') {
 
   clustFunc <- function () {
     print(paste("Font:", biv.viz.font));
+    fontSearch <- postscriptFonts()[grep(biv.viz.font, postscriptFonts())];
+    print(fontSearch);
+    if (length(fontSearch) == 0) {
+      biv.viz.font <- "sans";
+    }
     par(family = biv.viz.font);
     clusplot(
       sql.clusters.ratios,
