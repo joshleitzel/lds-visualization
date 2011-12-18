@@ -189,7 +189,11 @@ label, input[type=submit] {
 #options label, select {
   display: block;
 }
+#random {
+  padding: 1em 0;
+}
 #options select[multiple] {
+  margin: 1em auto;
   width: 90%;
 }
 #options select[multiple] option {
