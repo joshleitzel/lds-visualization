@@ -25,7 +25,7 @@ $(document).ready(function () {
   });
 
   // Graph event handler
-  $('#graph-history label').click(function () {
+  $('#graph-list label').click(function () {
     var graphType = $(this).find('input').val();
     $('#options .graph-option').hide();
     $('#options #graph-details-' + graphType).show();
@@ -34,6 +34,8 @@ $(document).ready(function () {
     }
     toggleSubmit();
   });
+
+  // Graph history
   $('#graph-history li a').live('click', function () {
     setGraph($(this).attr('href'));
     return false;
