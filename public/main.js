@@ -97,11 +97,11 @@ $(document).ready(function () {
   });
 
   // Graph Tools
-  $('#download-zip a').click(function () {
+  $('#download-tar a').click(function () {
     var link = $(this);
-    $.get('/zip', function (zipURL, textStatus, jqXHR) {
-      link.attr('href', zipURL);
-      window.location.href = zipURL;
+    $.get('/tar', function (tarURL, textStatus, jqXHR) {
+      link.attr('href', tarURL);
+      window.location.href = tarURL;
     });
     return false;
   });
