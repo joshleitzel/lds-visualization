@@ -40,7 +40,7 @@ server.get('/cleargraphs', function (req, res) {
 server.get('/graphs', function (req, res) {
   console.log('Getting graphs...');
   fs.readdir('public/graphs', function (err, files) {
-    res.end(_.map(files, function (file) { return 'graphs/' + file; }).join(','));
+    res.end(_.map(_.without(files, 'README'), function (file) { return 'graphs/' + file; }).join(','));
   });
 });
 
