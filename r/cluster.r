@@ -46,6 +46,8 @@ for (arg in args) {
       biv.viz.col.txt <- val;
     } else if (key == 'bivariate-colclus') {
       biv.viz.col.clus <- val;
+    } else if (key == 'bivariate-fontfamily') {
+      biv.viz.font <- val;
     }
   }
 }
@@ -100,7 +102,6 @@ if (length(clustersString) > 0) {
 }
 sql.clusters.ratios <- sql.clusters.ratios[-c(1,53,54)];
 
-
 if (debug) print('z');
 
 sql.clusters.k173 <- dbGetQuery(sql.clusters, paste("SELECT out FROM k173", sqlClusterAppend));
@@ -140,6 +141,11 @@ if (graph_type == 'silhouette') {
   col.p <- unlist(strsplit(biv.viz.col.p, ","));
   col.txt <- unlist(strsplit(biv.viz.col.txt, ","));
   col.clus <- unlist(strsplit(biv.viz.col.clus, ","));
+
+  if (biv.viz.font != 'arial') {
+    print(paste("Font:", biv.viz.font));
+    par(family = biv.viz.font);
+  }
 
   clusplot(
     sql.clusters.ratios,

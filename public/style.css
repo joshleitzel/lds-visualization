@@ -189,6 +189,9 @@ label, input[type=submit] {
 #options label, select {
   display: block;
 }
+#options label + label {
+  margin-top: 1em;
+}
 #random {
   padding: 1em 0;
 }
