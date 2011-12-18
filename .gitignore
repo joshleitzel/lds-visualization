@@ -1,6 +1,6 @@
 public/tmp/*
 !public/tmp/README
-public/graphs
+public/graphs/*
 r/cluster.log
 r/regression.log
 .monitor
