@@ -1,6 +1,8 @@
 require(RSQLite);
 require(cluster);
 
+source("r/helpers.r");
+
 debug <- TRUE;
 # Open a sink for logging
 sink("r/cluster.log");
@@ -125,12 +127,6 @@ graph_filename <- paste(unclass(Sys.time()), '.png', sep = "");
 
 png(paste(graph_path, graph_filename, sep = ""));
 
-
-parseRGB <- function(parseString) {
-  stringSplit <- unlist(strsplit(parseString, ","));
-  rgb(stringSplit[1], stringSplit[2], stringSplit[3], maxColorValue = 255);
-}
-
 if (graph_type == 'silhouette') {
 
   pr173 <- clara(sql.gene_dist, 173);
@@ -149,9 +145,9 @@ if (graph_type == 'silhouette') {
     sql.clusters.ratios,
     sql.clusters.k173,
     main = paste("Bivariate Cluster Plot of Clusters", clustersString),
-    col.p = parseRGB(biv.viz.col.p),
-    col.txt = parseRGB(biv.viz.col.txt),
-    col.clus = parseRGB(biv.viz.col.clus),
+    col.p = helpers.parseRGB(biv.viz.col.p),
+    col.txt = helpers.parseRGB(biv.viz.col.txt),
+    col.clus = helpers.parseRGB(biv.viz.col.clus),
     verbose = TRUE
   );
 
