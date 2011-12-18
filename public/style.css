@@ -8,7 +8,7 @@ html, body {
 }
 #wrapper {
   margin: 1em auto;
-  width: 960px;
+  width: 1210px;
 }
 #mast {
   background: #0F214A;
@@ -27,6 +27,10 @@ h1 .tm {
   color: #F2F0D8;
   font-family: helvetica, arial, sans-serif;
   font-weight: bold;
+}
+
+#main, #graph, #graph-list {
+  float: left;
 }
 
 /* Main */
@@ -211,7 +215,6 @@ label, input[type=submit] {
 /* Graph */
 #graph {
   border: 1px solid #eee;
-  float: right;
   width: 680px;
 }
 #graph .inner {
@@ -267,4 +270,52 @@ div.color .colorsub {
 	width: 30px;
 	height: 30px;
 	background: url(images/select.png) center;
+}
+
+/* Graph List */
+#graph-list {
+  width: 250px;
+}
+#graph-list .inner {
+  padding: 1em;
+}
+#graph-list h3 {
+  margin-bottom: 1em;
+}
+#graph-list ul {
+  max-height: 300px;
+  overflow: auto;
+}
+#graph-list li a {
+  background: #FAFAFA;
+  color: #1D4499;
+  display: block;
+  font-size: 80%;
+  padding: 0.5em 1em;
+  text-decoration: none;
+}
+#graph-list li a:hover {
+  background: #1D4499;
+  color: #FAFAFA;
+}
+#graph-list li + li {
+  border-top: 1px solid #E9DAF8;
+}
+#graph-tools {
+  font-size: 90%;
+  padding: 1em 0.5em;
+}
+#graph-tools p + p {
+  margin-top: 1em;
+}
+#graph-tools a {
+  color: #A91F1B;
+  display: block;
+  text-decoration: none;
+}
+#graph-tools a .ext {
+  color: #3C070A;
+}
+#graph-tools a:hover {
+  text-decoration: underline;
 }

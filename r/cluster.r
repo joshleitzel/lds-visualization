@@ -123,7 +123,7 @@ if (debug) print('f');
 # Plot graph depending on what graph type was requested
 
 graph_path <- paste(GRAPHS_DIR, '/', sep = "");
-graph_filename <- paste(unclass(Sys.time()), '.png', sep = "");
+graph_filename <- paste(unclass(Sys.time()), "_", sample(5000:50000, 1), '.png', sep = "");
 
 png(paste(graph_path, graph_filename, sep = ""));
 

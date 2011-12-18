@@ -17,6 +17,13 @@ $(document).ready(function () {
       submitReady = false,
       graph = $('#graph .inner');
 
+  $.get('/graphs', function (graphs, textStatus, jqXHR) {
+    graphs = graphs.split(',');
+    graphs.forEach(function (graphURL) {
+      $('#graph-list ul').prepend('<li><a href="' + graphURL + '">' + graphURL + '</a></li>');
+    });
+  });
+
   // Graph event handler
   $('#graph-list label').click(function () {
     var graphType = $(this).find('input').val();
@@ -27,6 +34,15 @@ $(document).ready(function () {
     }
     toggleSubmit();
   });
+  $('#graph-list li a').live('click', function () {
+    setGraph($(this).attr('href'));
+    return false;
+  });
+
+  function setGraph(url) {
+    $('#graph-will-load-here').hide();
+    $('#graph-container').html('<img src="' + url + '" />');
+  }
 
   $('input[name=random5]').click(function () {
     // pick 5 random clusters

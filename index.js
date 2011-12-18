@@ -30,15 +30,9 @@ var server = express.createServer();
 server.use(express.bodyParser())
   .use(express.static(__dirname + '/public'))
 
-server.get('/data', function (req, res) {
-  var dataSets = [];
-  fs.readdir(DATA_ROOT, function (err, files) {
-    dataSets = _.without(files, DATA_USER);
-    fs.readdir(DATA_ROOT + DATA_USER, function (err, files) {
-      files = _.map(files, function (file) { return DATA_USER + '/' + file; });
-      dataSets = _.union(dataSets, files);
-      res.end(dataSets.join(','));
-    });
+server.get('/graphs', function (req, res) {
+  fs.readdir('public/graphs', function (err, files) {
+    res.end(_.map(files, function (file) { return 'graphs/' + file; }).join(','));
   });
 });
 
