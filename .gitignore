@@ -1,6 +1,7 @@
 public/tmp/*
 !public/tmp/README
 public/graphs/*
+!public/graphs/README
 r/cluster.log
 r/regression.log
 .monitor

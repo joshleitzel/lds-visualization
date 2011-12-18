@@ -61,6 +61,8 @@ $(document).ready(function () {
 
   function addGraphToHistory(url) {
     $('#graph-history ul').prepend('<li><a href="' + url + '">' + url + '</a></li>');
+    $('#no-graphs-yet').hide();
+    $('#graph-history-clear').show();
   }
 
   function setGraph(url) {

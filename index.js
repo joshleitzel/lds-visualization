@@ -31,7 +31,8 @@ server.use(express.bodyParser())
   .use(express.static(__dirname + '/public'))
 
 server.get('/cleargraphs', function (req, res) {
-  childProcess.exec('rm public/graphs/*', function () {
+  console.log('Clearing graphs...');
+  childProcess.exec('rm public/graphs/*.png', function () {
     res.end('done');
   })
 });
