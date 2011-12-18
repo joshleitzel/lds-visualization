@@ -30,16 +30,33 @@ $(document).ready(function () {
 
   // Graph history
   $.get('/graphs', function (data, textStatus, jqXHR) {
-    graphs = data.split(',');
-    graphs.forEach(function (graphURL) {
-      addGraphToHistory(graphURL);
-    });
+    console.log(data);
+    graphs = data == '' ? [] : data.split(',');
+    if (graphs.length > 0) {
+      graphs.forEach(function (graphURL) {
+        addGraphToHistory(graphURL);
+      });
+    } else {
+      $('#no-graphs-yet').show();
+      $('#graph-tools, #graph-history-clear').hide();
+    }
     $('#graph-history h3').append(' <span class="count">' + graphs.length + '</span>');
   });
-  $('#graph-history li a').live('click', function (e) {
-    e.preventDefault();
+  $('#graph-history li a').live('click', function () {
     setGraph($(this).attr('href'));
     return false;
+  });
+  $('#graph-history-clear').click(function () {
+    if (confirm('Are you sure you want to clear the graph history?')) {
+      $.get('/cleargraphs', function (response, textStatus, jqXHR) {
+        if (response === 'done') {
+          $('#graph-history ul').html('');
+          $('#graph-history h3 .count').text('0');
+          $('#no-graphs-yet').show();
+          $('#graph-tools, #graph-history-clear').hide();
+        }
+      });
+    }
   });
 
   function addGraphToHistory(url) {

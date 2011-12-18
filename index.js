@@ -30,6 +30,12 @@ var server = express.createServer();
 server.use(express.bodyParser())
   .use(express.static(__dirname + '/public'))
 
+server.get('/cleargraphs', function (req, res) {
+  childProcess.exec('rm public/graphs/*', function () {
+    res.end('done');
+  })
+});
+
 server.get('/graphs', function (req, res) {
   console.log('Getting graphs...');
   fs.readdir('public/graphs', function (err, files) {

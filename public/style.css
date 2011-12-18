@@ -285,6 +285,14 @@ div.color .colorsub {
 #graph-history .inner {
   padding: 1em;
 }
+#graph-history-clear {
+  color: #8D8989;
+  float: right;
+  font-size: 80%;
+}
+#graph-history-clear:hover {
+  color: #486699;
+}
 #graph-history h3 {
   margin-bottom: 1em;
 }
@@ -344,4 +352,10 @@ div.color .colorsub {
 }
 #graph-tools a:hover {
   text-decoration: underline;
+}
+#no-graphs-yet {
+  color: #A9A9A9;
+  display: none;
+  padding: 1em;
+  text-align: center;
 }
