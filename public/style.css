@@ -214,8 +214,15 @@ label, input[type=submit] {
 
 /* Graph */
 #graph {
-  border: 1px solid #eee;
   width: 680px;
+}
+#graph .inner {
+  border: 1px solid #eee;
+  margin: 1em;
+  padding: 0 1em;
+}
+#graph-container {
+  text-align: center;
 }
 #graph .inner {
   padding: 1em;
