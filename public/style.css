@@ -29,7 +29,7 @@ h1 .tm {
   font-weight: bold;
 }
 
-#main, #graph, #graph-list {
+#main, #graph, #graph-history {
   float: left;
 }
 
@@ -272,21 +272,21 @@ div.color .colorsub {
 	background: url(images/select.png) center;
 }
 
-/* Graph List */
-#graph-list {
+/* Graph History */
+#graph-history {
   width: 250px;
 }
-#graph-list .inner {
+#graph-history .inner {
   padding: 1em;
 }
-#graph-list h3 {
+#graph-history h3 {
   margin-bottom: 1em;
 }
-#graph-list ul {
+#graph-history ul {
   max-height: 300px;
   overflow: auto;
 }
-#graph-list li a {
+#graph-history li a {
   background: #FAFAFA;
   color: #1D4499;
   display: block;
@@ -294,11 +294,11 @@ div.color .colorsub {
   padding: 0.5em 1em;
   text-decoration: none;
 }
-#graph-list li a:hover {
+#graph-history li a:hover {
   background: #1D4499;
   color: #FAFAFA;
 }
-#graph-list li + li {
+#graph-history li + li {
   border-top: 1px solid #E9DAF8;
 }
 #graph-tools {

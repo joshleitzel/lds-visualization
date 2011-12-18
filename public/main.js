@@ -25,7 +25,7 @@ $(document).ready(function () {
   });
 
   // Graph event handler
-  $('#graph-list label').click(function () {
+  $('#graph-history label').click(function () {
     var graphType = $(this).find('input').val();
     $('#options .graph-option').hide();
     $('#options #graph-details-' + graphType).show();
@@ -34,13 +34,13 @@ $(document).ready(function () {
     }
     toggleSubmit();
   });
-  $('#graph-list li a').live('click', function () {
+  $('#graph-history li a').live('click', function () {
     setGraph($(this).attr('href'));
     return false;
   });
 
   function addGraphToHistory(url) {
-    $('#graph-list ul').prepend('<li><a href="' + url + '">' + url + '</a></li>');
+    $('#graph-history ul').prepend('<li><a href="' + url + '">' + url + '</a></li>');
   }
 
   function setGraph(url) {
