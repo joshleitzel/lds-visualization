@@ -149,9 +149,21 @@ $(document).ready(function () {
 
     processData.graph = $('#graph-list input:checked').val();
 
+    visuals = []; // used to remember what we've already processed
     processData.visual = [];
     $('#graph-details-' + processData.graph + ' input[data-visual=true]').each(function () {
-      processData.visual.push($(this).attr('name') + '=' + $(this).val());
+      var $this = $(this);
+      var $name = $this.attr('name');
+
+      if (visuals.indexOf($name) === -1) {
+        visuals.push($this.attr('name'));
+
+        if ($this.attr('type') === 'radio') {
+          processData.visual.push($name + "=" + $('input[data-visual=true][name=' + $name + ']:checked').val());
+        } else {
+          processData.visual.push($this.attr('name') + '=' + $this.val());
+        }
+      }
     });
 
     $('select[name=clusters] option:selected').each(function () {

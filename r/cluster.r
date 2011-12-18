@@ -128,6 +128,9 @@ graph.salt <- paste(unclass(Sys.time()), "_", sample(5000:50000, 1), sep="");
 graph.filename.png <- paste(graph.salt, '.png', sep = "");
 graph.filename.pdf <- paste(graph.salt, '.pdf', sep = "");
 
+# Save a copy of par() so we can reset it later
+par.initial <- par();
+
 if (graph_type == 'silhouette') {
 
   pr173 <- clara(sql.gene_dist, 173);
@@ -143,10 +146,8 @@ if (graph_type == 'silhouette') {
   col.clus <- unlist(strsplit(biv.viz.col.clus, ","));
 
   clustFunc <- function () {
-    if (biv.viz.font != 'arial') {
-      print(paste("Font:", biv.viz.font));
-      par(family = biv.viz.font);
-    }
+    print(paste("Font:", biv.viz.font));
+    par(family = biv.viz.font);
     clusplot(
       sql.clusters.ratios,
       sql.clusters.k173,
@@ -165,6 +166,8 @@ if (graph_type == 'silhouette') {
   clustFunc();
 
 }
+
+par(par.initial);
 
 dev.off();
 
