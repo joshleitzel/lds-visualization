@@ -1,3 +1,5 @@
+public/tmp/*
+!public/tmp/README
 public/graphs
 r/cluster.log
 r/regression.log

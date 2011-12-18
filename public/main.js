@@ -96,6 +96,16 @@ $(document).ready(function () {
     });
   });
 
+  // Graph Tools
+  $('#download-zip a').click(function () {
+    var link = $(this);
+    $.get('/zip', function (zipURL, textStatus, jqXHR) {
+      link.attr('href', zipURL);
+      window.location.href = zipURL;
+    });
+    return false;
+  });
+
   // pseudo main submission
   $('#form-submit').click(function () {
     event.preventDefault();

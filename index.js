@@ -21,9 +21,8 @@ var GRAPHS_DIR = 'graphs/',
       regression : 'r/regression.r'
     };
 
-function getTemplate(templateName) {
-  return fs.readFileSync('client/' + templateName + '.html').toString().replace('ROOT_PATH', ROOT_PATH);
-}
+// Clear tmp directory
+childProcess.exec('rm public/tmp/*');
 
 var server = express.createServer();
 
@@ -36,16 +35,13 @@ server.get('/graphs', function (req, res) {
   });
 });
 
-server.post('/upload', function (req, res) {
-  var uploadFile = req.files.dataUpload;
-  if (!uploadFile) {
-    res.end('Error: no file passed');
-  }
-
-  // move file to data dir
-  var copyProc = childProcess.spawn('cp', [uploadFile.path, DATA_ROOT + DATA_USER + '/' + uploadFile.name]);
-  copyProc.on('exit', function (exitCode) {
-    res.redirect('/');
+server.get('/zip', function (req, res) {
+  var publicZipURL = 'tmp/graphs_' + new Date().getTime() + '.tar';
+  childProcess.exec('tar czf public/' + publicZipURL + ' public/graphs/*', function (error, stdout, stderr) {
+    if (error) {
+      throw error;
+    }
+    res.end(publicZipURL);
   });
 });
 
@@ -63,7 +59,7 @@ server.post('/process', function (req, res) {
 
   var args = _.union([SCRIPT_MAP[process]], graph, clusters, visual);
   console.log('Rscript ' + args.join(' '));
-  var rProc = childProcess.exec('Rscript ' + args.join(' '), function (error, stdout, stderr) {
+  childProcess.exec('Rscript ' + args.join(' '), function (error, stdout, stderr) {
     console.log('stdout: ' + stdout);
     console.log('stderr: ' + stderr);
     res.end(stdout || stderr);
