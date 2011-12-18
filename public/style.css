@@ -240,15 +240,14 @@ label, input[type=submit] {
 
 /* Footer */
 #footer {
-  border-top: 1px solid #EBEBEB;
-  bottom: 0;
   clear: both;
   color: #8F8F8F;
   font-size: 80%;
-  position: absolute;
+  padding-top: 2em;
   width: 100%;
 }
 #footer .inner {
+  border-top: 1px solid #EBEBEB;
   padding: 1em;
 }
 #footer a {

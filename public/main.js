@@ -17,13 +17,6 @@ $(document).ready(function () {
       submitReady = false,
       graph = $('#graph .inner');
 
-  $.get('/graphs', function (graphs, textStatus, jqXHR) {
-    graphs = graphs.split(',');
-    graphs.forEach(function (graphURL) {
-      addGraphToHistory(graphURL);
-    });
-  });
-
   // Graph event handler
   $('#graph-list label').click(function () {
     var graphType = $(this).find('input').val();
@@ -36,6 +29,13 @@ $(document).ready(function () {
   });
 
   // Graph history
+  $.get('/graphs', function (data, textStatus, jqXHR) {
+    graphs = data.split(',');
+    graphs.forEach(function (graphURL) {
+      addGraphToHistory(graphURL);
+    });
+    $('#graph-history h3').append(' <span class="count">(' + data.length + ')</span>');
+  });
   $('#graph-history li a').live('click', function () {
     setGraph($(this).attr('href'));
     return false;
