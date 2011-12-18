@@ -80,11 +80,9 @@ if (length(clustersString) > 0) {
   sqlClusterAppend <- paste("WHERE out IN (", clustersString, ")", sep="");
 }
 
-
 if (debug) print('s');
 
 sql.clusters <- dbConnect(dbDriver, dbname = sql.info.final_clusters);
-
 
 if (debug) print('t');
 
@@ -172,10 +170,12 @@ if (graph_type == 'silhouette') {
 
 }
 
+# Reset par
 par(par.initial);
 
 dev.off();
 
 sink();
 
+# Output the path of the new graph 
 print(paste("GRAPH_PRE", graph.filename.png, "GRAPH_POST", sep = ""));
