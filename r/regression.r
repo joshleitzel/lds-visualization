@@ -39,15 +39,11 @@ getClusters <- function(clusnum=1){
   
 	# A list of vectors that contain the means of the cluster at each time point
 	clusters <- list()
-print("rownum");
-print(row.num);
+
 	for (i in row.num) {
-	  print('yut');
-	  print(i);
     sqlcmd <- paste("select * from ba_ratios inner join k173 on ba_ratios.row_names=k173.row_names where out=", i, sep="")
  	  data <- dbGetQuery(sql.clusters, sqlcmd)
-    
-    print('uyt');
+
     # This will remove the non-numeric rows
     data<-data[-c(1,53,54)]
 	

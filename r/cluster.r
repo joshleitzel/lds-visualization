@@ -149,7 +149,7 @@ graph.filename.pdf <- paste(graph.salt, '.pdf', sep = "");
 # Save a copy of par() so we can reset it later
 par.initial <- par();
 
-if (graph_type == 'cv') {
+if (graph_type == 'cv' || graph_type == 'lm') {
 
   bestFit <- function (x, y, kFolds=5, stepSize = .05, printSteps = FALSE) {
     # Plotting the CV curve
@@ -198,7 +198,7 @@ if (graph_type == 'cv') {
       }
     }
 
-    if (printSteps == TRUE){
+    if (printSteps == TRUE && graph_type == 'cv') {
       plot.cv.lm( 1:convertToRange , cv, cv.err )
       cat("Best CV:",mincv, "\n")
       cat("Best t:", bestT, "\n")
@@ -233,16 +233,17 @@ if (graph_type == 'cv') {
   
     # Refitting the Model with best parameters from l1ce()
     lm.final <- lm(y ~ x)
-    plot( y, predict( lm.final ) )
-    abline(0,1, col = 2, lwd = 3, lty = 2)
+    if (graph_type == 'lm') {
+      plot( y, predict( lm.final ) )
+      abline(0,1, col = 2, lwd = 3, lty = 2)
+    }
     #summary(lm.final)
 
     invisible(l1ce.final)
   
   }
 
-  gene_name <- "GBAA0001";
-  sqlcom <- paste("select out from k173 where row_names = \"", gene_name, "\"", sep="")
+  sqlcom <- paste("select out from k173 where row_names IN('", genesString, "')", sep="")
   clusmat <- dbGetQuery(dbConnect(dbDriver, dbname="final_clusters.sqlite"), sqlcom)
   clusnum <- as.integer(clusmat)
   print('clusnum');
