@@ -20,7 +20,13 @@ $(document).ready(function () {
   // Graph event handler
   $('#graph-list label').click(function () {
     var graphType = $(this).find('input').val();
+    var genesAndClusters = $('select[name=genes], select[name=clusters]');
     $('#options .graph-option').hide();
+    if (graphType == 'cv' || graphType == 'lm') {
+      genesAndClusters.removeAttr('multiple');
+    } else {
+      genesAndClusters.attr('multiple', 'multiple');
+    }
     $('#options #graph-details-' + graphType + ', #options #graph-details-all').show();
     if ($('#options').css('display') == 'none') {
       $('#options').slideDown();

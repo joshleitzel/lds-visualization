@@ -135,7 +135,6 @@ gene <- "GBAA4059";
 sql.dist_db <- dbConnect(dbDriver, dbname = paste('clusters/dist/', gene, '.sqlite', sep = ""));
 sql.gene_dist <- dbGetQuery(sql.dist_db, "SELECT d FROM dist");
 
-
 if (length(genesString) > 0) {
   clusmat <- dbGetQuery(dbConnect(dbDriver, dbname="final_clusters.sqlite"), paste("SELECT out FROM k173 WHERE row_names = '", genesString, "'", sep=""));
 } else {
