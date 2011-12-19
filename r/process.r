@@ -1,3 +1,7 @@
+# Main visualization processing file
+# By Josh Leitzel, Ari Bendon, John Loomis
+# 2011
+
 require(RSQLite);
 require(cluster);
 
