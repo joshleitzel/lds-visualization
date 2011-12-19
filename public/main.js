@@ -21,7 +21,7 @@ $(document).ready(function () {
   $('#graph-list label').click(function () {
     var graphType = $(this).find('input').val();
     $('#options .graph-option').hide();
-    $('#options #graph-details-' + graphType).show();
+    $('#options #graph-details-' + graphType + ', #options #graph-details-all').show();
     if ($('#options').css('display') == 'none') {
       $('#options').slideDown();
     }
@@ -238,7 +238,7 @@ $(document).ready(function () {
   }
 
   // submit button togglemania
-  function toggleSubmit() {
+  function toggleSubmit() {/*
     var graphChecked = $('#graph-list input:checked');
     var graphVal = graphChecked.val();
     var clustersSelected = $('select[name=clusters] option:selected');
@@ -253,7 +253,7 @@ $(document).ready(function () {
       submitButton.addClass('disabled');
       submitP.slideDown();
       submitButton.attr('disabled', 'disabled');
-    }
+    }*/
   }
   toggleSubmit();
   $('[name=process]').click(function () {

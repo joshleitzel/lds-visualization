@@ -28,20 +28,9 @@
           <ul id="graph-list">
             <li><label><input type="radio" name="graph" value="bivariate" /> Bivariate Cluster Plot</label></li>
             <li><label><input type="radio" name="graph" value="silhouette" /> Silhouette Plot</label></li>
-            <li><label><input type="radio" name="graph" value="another" /> Another Plot</label></li>
+            <li><label><input type="radio" name="graph" value="cv" /> CV Curve</label></li>
+            <li><label><input type="radio" name="graph" value="lm" /> Linear Model</label></li>
           </ul>
-          <!--<p id="loading-data">Loading data sets…</p>
-          <div id="data-sets">
-            <label id="all"><input type="checkbox" name="data" value="all" /> All</a></label>
-            <label id="random"><input type="checkbox" name="data" value="random" /> Random 5</a></label>
-          </div>
-          <div id="add-data-set-area">
-            <form action="/upload" method="post" enctype="multipart/form-data">
-              <p>Choose data set to upload:</p>
-              <input type="file" name="dataUpload" />
-            </form>
-          </div>
-          <p id="add-data-set"><a href="#">Add Data Set</a></p>-->
         </div>
       </div>
 
@@ -51,7 +40,7 @@
           <div class="graph-option" id="graph-details-silhouette">
             [no more info required...yet]
           </div>
-          <div class="graph-option" id="graph-details-bivariate">
+          <div class="graph-option" id="graph-details-all">
             <fieldset>
               <legend>Genes</legend>
               <div class="fieldset-inner">
@@ -247,6 +236,8 @@
                 </select>
               </div>
             </fieldset>
+          </div>
+          <div class="graph-option" id="graph-details-bivariate">
             <fieldset>
               <legend>Options</legend>
               <div class="fieldset-inner">

@@ -2,6 +2,7 @@ require(RSQLite);
 require(cluster);
 
 source("r/helpers.r");
+source("r/regression.r");
 
 debug <- TRUE;
 # Open a sink for logging
@@ -130,6 +131,8 @@ print(paste("Number of rows in `sql.clusters.k173`:", nrow(sql.clusters.k173)));
 print(paste("Length of `sql.clusters.k173`:", length(sql.clusters.k173)));
 print(sql.clusters.k173);
 
+print('hansel!');
+
 gene <- "GBAA4059";
 sql.dist_db <- dbConnect(dbDriver, dbname = paste('clusters/dist/', gene, '.sqlite', sep = ""));
 sql.gene_dist <- dbGetQuery(sql.dist_db, "SELECT d FROM dist");
@@ -146,7 +149,130 @@ graph.filename.pdf <- paste(graph.salt, '.pdf', sep = "");
 # Save a copy of par() so we can reset it later
 par.initial <- par();
 
-if (graph_type == 'silhouette') {
+if (graph_type == 'cv') {
+
+  bestFit <- function (x, y, kFolds=5, stepSize = .05, printSteps = FALSE) {
+    # Plotting the CV curve
+    if (printSteps == FALSE){
+      cv.lars(x, y, K=kFolds)
+    }
+
+    # Converting the step size to a range
+    convertToRange = 1/stepSize
+    bounds = (1:convertToRange)/convertToRange
+  
+    cv <- numeric(convertToRange)
+    cv.err <- numeric(convertToRange)
+  
+    # Arbitrary Large Numbers to track best values so far
+    mincv <- 10000
+    mincv.err <- 10000
+    bestT <- 0
+    bestNumPredictors <- 0
+  
+    # Stepping through every shrinkage parameter
+    for (i in 1:length(bounds)){ 
+      l1ce.example  <- l1ce( y ~ x , sweep.out = ~ 1, standardize = TRUE,
+                          bound = bounds[i], absolute.t = FALSE)
+      pFromL1 <- which( abs(l1ce.example$coefficients) > 0)
+      pFromL1 <- pFromL1[pFromL1 != 1] - 1
+    
+      # Making a model from the predictors found with the L1 Shrinkage
+      cv.obj <- cv.lm( y, x, k = kFolds, p = pFromL1 )
+      cv[i] <- cv.obj$cv
+      cv.err[i] <- cv.obj$cv.err
+    
+      if (printSteps == TRUE){
+        cat("Shrinkage Parameter is:", bounds[i], "\n")
+        cat("CV is:", cv.obj$cv, "\n")
+        cat("CV.err is:", cv.obj$cv.err, "\n")
+      }
+    
+      # Testing for best shrinkage parameter
+      if(cv.obj$cv < mincv){
+        mincv = cv.obj$cv
+        mincv.err = cv.obj$cv.err
+        bestT = bounds[i]
+        bestNumPredictors = length(pFromL1)
+        bestPredictors = pFromL1
+      }
+    }
+
+    if (printSteps == TRUE){
+      plot.cv.lm( 1:convertToRange , cv, cv.err )
+      cat("Best CV:",mincv, "\n")
+      cat("Best t:", bestT, "\n")
+      cat("The Best number of Predictors was:", bestNumPredictors, "\n")
+      cat("The predictors were:", "\n")
+      print(bestPredictors)
+    }
+      
+    # This is the first shrinkage parameter that's within the  best cv+cv.err
+    foundT <- 0
+      
+    for (i in 1:length(bounds)){
+      if(cv[i] < (mincv + mincv.err)){
+        foundT <- i*.05
+        break
+      }
+    }
+  
+    cat("The shrinkage parameter t is:", foundT, "\n")
+   
+    # This is returned
+    l1ce.final  <- l1ce( y ~ x , sweep.out = ~ 1, standardize = TRUE,
+                          bound = foundT, absolute.t = FALSE)
+    predictors <- which( abs(l1ce.final$coefficients) > 0)
+    predictors <- predictors[predictors != 1] - 1
+      
+    cat("The number of predictors is: ", length(predictors), "\n")
+
+    if ( length(predictors) < dim(x)[2] ) { 
+        x <- as.matrix( x[,predictors] )
+    }
+  
+    # Refitting the Model with best parameters from l1ce()
+    lm.final <- lm(y ~ x)
+    plot( y, predict( lm.final ) )
+    abline(0,1, col = 2, lwd = 3, lty = 2)
+    #summary(lm.final)
+
+    invisible(l1ce.final)
+  
+  }
+
+  gene_name <- "GBAA0001";
+  sqlcom <- paste("select out from k173 where row_names = \"", gene_name, "\"", sep="")
+  clusmat <- dbGetQuery(dbConnect(dbDriver, dbname="final_clusters.sqlite"), sqlcom)
+  clusnum <- as.integer(clusmat)
+  print('clusnum');
+  print(clusnum);
+
+  tfNames <- scan(file = "regression/tfs.txt", what = "character", sep = "\n");
+  transFactors <- tfList(tfNames);
+  regressionClusters <- getClusters(clusnum);
+
+  # List to store the results
+  results <- list()
+  for (i in 1:NROW(regressionClusters)){
+    # y is a vector of the mean values of the cluster i
+    y <- unlist(regressionClusters[i,])
+    #str(transFactors)
+
+    # Here we pick the best correlated TFs to y, so that we don't have to
+    # run bestFit with every transciption factor
+    x <- predictors(y,transFactors)
+
+    # finding the best/most parsimonious model using cv
+    png(paste(graph.path, graph.filename.png, sep = ""));
+    model <- bestFit(t(x),y)
+
+    # add model to list of models for clusters
+    results[[i]] <- model
+    #str(model)
+  }
+
+} else if (graph_type == 'silhouette') {
 
   pr173 <- clara(sql.gene_dist, 173);
   str(si <- silhouette(pr173));
