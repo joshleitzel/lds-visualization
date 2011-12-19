@@ -53,6 +53,18 @@
           </div>
           <div class="graph-option" id="graph-details-bivariate">
             <fieldset>
+              <legend>Genes</legend>
+              <div class="fieldset-inner">
+                <p>Choose some genes to plot.</p>
+                <p id="random"><label><input type="radio" name="random5" />Random 5</label></p>
+                <input type="hidden" name="randomClusterNum" />
+                <select name="genes" multiple="multiple">
+                  <!-- placed here my main.js -->
+                </select>
+                <a id="load-more-genes" href="#">Load the rest…</a>
+              </div>
+            </fieldset>
+            <fieldset>
               <legend>Clusters</legend>
               <div class="fieldset-inner">
                 <p>Choose some clusters to plot.</p>

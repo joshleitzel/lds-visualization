@@ -26,6 +26,7 @@ graph_type <- "undefined";
 gene <- "undefined";
 
 clustersString <- c();
+genesString <- c();
 
 # Initialize some args for later
 biv.viz.shade <- FALSE;
@@ -44,6 +45,8 @@ for (arg in args) {
       graph_type <- val;
     } else if (key == 'clusters') {
       clustersString <- val;
+    } else if (key == 'genes') {
+      genesString <- val;
     } else if (key == 'bivariate-colp') {
       biv.viz.col.p <- val;
     } else if (key == 'bivariate-coltxt') {

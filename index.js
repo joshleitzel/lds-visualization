@@ -21,7 +21,7 @@ var GRAPHS_DIR = 'graphs/',
       regression : 'r/regression.r'
     };
 
-// Create a tmp directory or replace the old one
+// Clear tmp directory
 console.log('Clearing public/tmp/ directory...');
 childProcess.exec('rm public/tmp/*.tar');
 
@@ -37,6 +37,15 @@ server.get('/cleargraphs', function (req, res) {
       res.end('done');
     });
   })
+});
+
+server.get('/genes', function (req, res) {
+  console.log('Getting genes...');
+  fs.readdir('clusters/dist', function (err, files) {
+    res.end(_.map(files, function (file) {
+      return file.substring(0, file.length - 7); // chop off the `.sqlite`
+    }).join(','));
+  });
 });
 
 server.get('/graphs', function (req, res) {
@@ -71,6 +80,7 @@ server.get('/pdf', function (req, res) {
 server.post('/process', function (req, res) {
   console.log('Processing graph...');
   var clusters = req.body.clusters ? 'clusters=' + req.body.clusters : '',
+      genes = req.body.genes ? 'genes=' + req.body.genes : '',
       graph = 'graph=' + req.body.graph,
       process = req.body.process,
       visual = req.body.visual,
@@ -80,7 +90,7 @@ server.post('/process', function (req, res) {
     res.end('Error: data sent is not valid');
   }
 
-  var args = _.union([SCRIPT_MAP[process]], graph, clusters, visual, options);
+  var args = _.union([SCRIPT_MAP[process]], graph, clusters, genes, visual, options);
   console.log('Invoking Rscript ' + args.join(' '));
   childProcess.exec('Rscript ' + args.join(' '), function (error, stdout, stderr) {
     if (error) {

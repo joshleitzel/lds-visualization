@@ -28,6 +28,28 @@ $(document).ready(function () {
     toggleSubmit();
   });
 
+  var genes = [];
+  // Populate genes
+  $.get('/genes', function (data, textStatus, jqXHR) {
+    var loopCount = 1,
+        initialCount = 5; // initial # of genes to display
+    genes = data.split(','); // updates global `genes` for later
+    genes.forEach(function (gene) {
+      if (loopCount++ <= initialCount) {
+        $('select[name=genes]').append('<option value="' + gene + '">' + gene + '</option>');
+      }
+    });
+    genes = genes.splice(initialCount, genes.length);
+  });
+  $('#load-more-genes').click(function () {
+    genes.forEach(function (gene) {
+      $('select[name=genes]').append('<option value="' + gene + '">' + gene + '</option>');
+    });
+    $(this).fadeOut();
+
+    return false;
+  })
+
   // Graph history
   $.get('/graphs', function (data, textStatus, jqXHR) {
     console.log(data);
@@ -145,6 +167,7 @@ $(document).ready(function () {
 
     var processData = {},
         clusters = [],
+        submitGenes = [],
         i;
 
     processData.graph = $('#graph-list input:checked').val();
@@ -174,6 +197,11 @@ $(document).ready(function () {
         processData.options.push($this.attr('name') + '=true');
       }
     });
+
+    $('select[name=genes] option:selected').each(function () {
+      submitGenes.push($(this).val());
+    });
+    processData.genes = submitGenes.join(',');
 
     $('select[name=clusters] option:selected').each(function () {
       clusters.push($(this).val().split('cluster')[1]);
