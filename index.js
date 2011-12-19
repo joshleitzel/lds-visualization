@@ -90,7 +90,7 @@ server.post('/process', function (req, res) {
     res.end('Error: data sent is not valid');
   }
 
-  var args = _.union([SCRIPT_MAP[process]], graph, clusters, genes, visual, options);
+  var args = _.union(['r/process.r'], graph, clusters, genes, visual, options);
   console.log('Invoking Rscript ' + args.join(' '));
   childProcess.exec('Rscript ' + args.join(' '), function (error, stdout, stderr) {
     if (error) {
