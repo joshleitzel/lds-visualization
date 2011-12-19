@@ -131,11 +131,16 @@ print(paste("Number of rows in `sql.clusters.k173`:", nrow(sql.clusters.k173)));
 print(paste("Length of `sql.clusters.k173`:", length(sql.clusters.k173)));
 print(sql.clusters.k173);
 
-print('hansel!');
-
 gene <- "GBAA4059";
 sql.dist_db <- dbConnect(dbDriver, dbname = paste('clusters/dist/', gene, '.sqlite', sep = ""));
 sql.gene_dist <- dbGetQuery(sql.dist_db, "SELECT d FROM dist");
+
+
+if (length(genesString) > 0) {
+  clusmat <- dbGetQuery(dbConnect(dbDriver, dbname="final_clusters.sqlite"), paste("SELECT out FROM k173 WHERE row_names = '", genesString, "'", sep=""));
+} else {
+  clusmat <- clustersString;
+}
 
 if (debug) print('f');
 
@@ -243,8 +248,7 @@ if (graph_type == 'cv' || graph_type == 'lm') {
   
   }
 
-  sqlcom <- paste("select out from k173 where row_names IN('", genesString, "')", sep="")
-  clusmat <- dbGetQuery(dbConnect(dbDriver, dbname="final_clusters.sqlite"), sqlcom)
+  print(clusmat);
   clusnum <- as.integer(clusmat)
   print('clusnum');
   print(clusnum);
