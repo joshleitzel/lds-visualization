@@ -27,7 +27,7 @@ $(document).ready(function () {
     } else {
       genesAndClusters.attr('multiple', 'multiple');
     }
-    $('#options #graph-details-' + graphType + ', #options #graph-details-all').show();
+    $('#options #graph-details-' + graphType + (graphType === 'silhouette' ? '' : ', #options #graph-details-all')).show();
     if ($('#options').css('display') == 'none') {
       $('#options').slideDown();
     }

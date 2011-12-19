@@ -17,7 +17,7 @@
 </head>
 <body>
   <div id="mast">
-    <h1>SuperSexySonic Data Visualizer<span class="tm">™</span></h1>
+    <h1>Data Visualizer</h1>
   </div>
   <div id="wrapper">
     <div id="main">
@@ -38,14 +38,14 @@
         <h2><span class="num">2</span> A little more info…</h2>
         <div class="inner">
           <div class="graph-option" id="graph-details-silhouette">
-            [no more info required...yet]
+            [no more info required]
           </div>
           <div class="graph-option" id="graph-details-all">
             <fieldset>
               <legend>Genes</legend>
               <div class="fieldset-inner">
-                <p>Choose some genes to plot.</p>
-                <p id="random"><label><input type="radio" name="random5" />Random 5</label></p>
+                <p>Choose a gene whose cluster to plot.</p>
+                <!--<p id="random"><label><input type="radio" name="random5" />Random 5</label></p>-->
                 <input type="hidden" name="randomClusterNum" />
                 <select name="genes" multiple="multiple">
                   <!-- placed here my main.js -->
@@ -320,21 +320,7 @@
               </div>
             </fieldset>
           </div>
-          <div class="graph-option" id="graph-details-another">
-            [not implemented yet]
-          </div>
         </div>
-        <!--<div class="inner">
-          <div class="process">
-            <input id="process-regression" type="radio" name="process" value="regression" />
-            <label for="process-regression"> Regression</label>
-          </div>
-
-          <div class="process">
-            <input id="process-cluster" type="radio" name="process" value="cluster" />
-            <label for="process-cluster"> Cluster</label>
-          </div>
-        </div>-->
       </div>
 
       <div class="submit">

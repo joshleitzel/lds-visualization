@@ -278,6 +278,8 @@ if (graph_type == 'cv' || graph_type == 'lm') {
 
 } else if (graph_type == 'silhouette') {
 
+  png(paste(graph.path, graph.filename.png, sep = ""));
+
   pr173 <- clara(sql.gene_dist, 173);
   str(si <- silhouette(pr173));
   (ssi <- summary(si));
